@@ -1,0 +1,33 @@
+Request Station Schedule
+------------------------
+GET /web/prd-irt/PublicCommunicationRestService.svc/RetrieveStationSchedule?stationID=9&dateTimeFrom=2012-08-17+23%3A05%3A00&dateTimeTo=2012-08-18+02%3A05%3A00&searchType=1&maxResults=15 HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Accept-Encoding: gzip
+Authorization: OAuth oauth_consumer_key="Android", oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1345237512", oauth_nonce="7873187181951959344", oauth_signature="3oH%2BwGCvoJnbDURT6yyyHnkIUWk%3D"
+Host: services.infrabel.be
+Connection: Keep-Alive
+
+<Done>
+
+Response
+--------
+HTTP/1.1 200 OK
+Cache-Control: private
+Content-Type: text/html
+Content-Encoding: gzip
+Vary: Accept-Encoding
+Server: Microsoft-IIS/7.5
+RealTimeDataAvailable: True
+X-Stats-Code: 16
+X-Stats-Cache: 47
+X-Stats-Cache-Count: 8
+X-Stats-Service: 296
+X-Stats-Service-Count: 7
+Server: Microsoft-IIS/7.5
+X-Powered-By: ASP.NET
+X-AspNet-Version: 4.0.30319
+X-Powered-By: ASP.NET
+Date: Fri, 17 Aug 2012 21:03:41 GMT
+Content-Length: 708
+
+{"DateTimeFrom":"\/Date(1345237500000+0200)\/","DateTimeTo":"\/Date(1345248300000+0200)\/","Id":9,"SearchType":1,"StationActive":true,"Trains":[{"ArrivalDateTime":"\/Date(1345237680000+0200)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"CommercialTypes":["IR"],"DepartureDate":"\/Date(1345154400000+0200)\/","DepartureDateTime":"\/Date(1345237980000+0200)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"Destinations":[523],"HasWorksInfo":false,"IsImmobilized":false,"Origins":[37],"ReservationRequired":false,"RouteModified":false,"StopStatus":0,"Track":"2","TrackModified":false,"TrainNumber":2922,"TrainStatus":0},{"ArrivalDateTime":"\/Date(1345237980000+0200)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"CommercialTypes":["L"],"DepartureDate":"\/Date(1345154400000+0200)\/","DepartureDateTime":"\/Date(1345238040000+0200)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"Destinations":[715],"HasWorksInfo":false,"IsImmobilized":false,"Origins":[523],"ReservationRequired":false,"RouteModified":false,"StopStatus":0,"Track":"1","TrackModified":false,"TrainNumber":2493,"TrainStatus":0},{"ArrivalDateTime":"\/Date(1345238760000+0200)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"CommercialTypes":["IC"],"DepartureDate":"\/Date(1345154400000+0200)\/","DepartureDateTime":"\/Date(1345238820000+0200)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"Destinations":[523],"HasWorksInfo":true,"IsImmobilized":false,"Origins":[642,166],"ReservationRequired":false,"RouteModified":false,"StopStatus":0,"Track":"3","TrackModified":false,"TrainNumber":1521,"TrainStatus":0},{"ArrivalDateTime":"\/Date(1345239600000+0200)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"CommercialTypes":["L"],"DepartureDate":"\/Date(1345154400000+0200)\/","DepartureDateTime":"\/Date(1345239660000+0200)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"Destinations":[715],"HasWorksInfo":false,"IsImmobilized":false,"Origins":[37],"ReservationRequired":false,"RouteModified":false,"StopStatus":0,"Track":"1","TrackModified":false,"TrainNumber":2872,"TrainStatus":0}]}

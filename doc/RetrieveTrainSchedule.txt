@@ -1,0 +1,20 @@
+The code
+--------
+TrainDetailActivity.class
+
+    LinkedList localLinkedList = new LinkedList();
+    localLinkedList.add(new BasicNameValuePair("trainNumber", String.valueOf(this._train.getNumber())));
+    localLinkedList.add(new BasicNameValuePair("requestedDate", this._userSettings.tomorrowDayForWebService()));
+    localLinkedList.add(new BasicNameValuePair("dateType", String.valueOf(TrainDetailDateType.DEPARTURE.ordinal())));
+    localLinkedList.add(new BasicNameValuePair("language", getResources().getString(2131230720)));
+    this._trainScheduleFetcher.getObjectAtUrl(MyApp.webServiceUrl() + "/RetrieveTrainSchedule", localLinkedList);
+
+        localLinkedList2.add(new BasicNameValuePair("trains", localJSONArray.toString()));
+        localLinkedList2.add(new BasicNameValuePair("language", getResources().getString(2131230720)));
+        this._logicalTrainFetcher.postObjectAtUrl(MyApp.webServiceUrl() + "/RetrieveRouteTrain", localLinkedList2);
+
+/RetrieveTrainSchedule?trainNumber=<train id>&requestedDate=<date for the train-schedule>&dateType=1&language=nl
+
+POST /RetrieveRouteTrain
+
+trains=[JSON array for trains]&language=nl

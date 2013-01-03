@@ -1,0 +1,31 @@
+Retrieve Status
+---------------
+GET /web/prd-irt/PublicCommunicationRestService.svc/RetrieveStatus HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Accept-Encoding: gzip
+Authorization: OAuth oauth_consumer_key="Android", oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1345237497", oauth_nonce="-3681812729464904224", oauth_signature="S73U6PEccOsr8A7SY8AnuJzFVoQ%3D"
+Host: services.infrabel.be
+Connection: Keep-Alive
+
+<Done>
+
+Response
+--------
+HTTP/1.1 200 OK
+Cache-Control: private
+Content-Type: text/html
+Content-Encoding: gzip
+Vary: Accept-Encoding
+Server: Microsoft-IIS/7.5
+RealTimeDataAvailable: True
+X-Stats-Code: 1
+X-Stats-Cache: 16
+X-Stats-Cache-Count: 2
+Server: Microsoft-IIS/7.5
+X-Powered-By: ASP.NET
+X-AspNet-Version: 4.0.30319
+X-Powered-By: ASP.NET
+Date: Fri, 17 Aug 2012 21:03:25 GMT
+Content-Length: 262
+
+{"Mobile":{"ApplicationEnabled":true,"InfoBarEnabled":true,"RouteSearchEnabled":true,"StationSearchEnabled":true,"TrainSearchEnabled":true},"RealTimeDataAvailable":true,"ServerTime":"\/Date(1345237424599+0200)\/","Website":{"ApplicationEnabled":true,"InfoBarEnabled":true,"RouteSearchEnabled":true,"StationSearchEnabled":true,"TrainSearchEnabled":true}}

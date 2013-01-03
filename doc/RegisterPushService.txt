@@ -1,0 +1,44 @@
+The code
+--------
+
+PushManager.class
+
+URL push service "http://services.infrabel.be/web/prd-smartphone/PushRestService.svc"
+
+      LinkedList localLinkedList = new LinkedList();
+      localLinkedList.add(new BasicNameValuePair("identifier", Settings.Secure.getString(MyApp.getContext().getContentResolver(), "android_id")));
+      localLinkedList.add(new BasicNameValuePair("platform", "2"));
+      localLinkedList.add(new BasicNameValuePair("token", this._pushToken));
+      localLinkedList.add(new BasicNameValuePair("language", MyApp.getContext().getResources().getString(2131230720)));
+      localLinkedList.add(new BasicNameValuePair("delay", Integer.toString(this._delay)));
+      localLinkedList.add(new BasicNameValuePair("weekend", str));
+      this._registrationFetcher.getObjectAtUrl(MyApp.pushWebServiceUrl() + "/RegisterPush", localLinkedList);
+
+      HashMap localHashMap = (HashMap)this._queuedRegistrations.get(0);
+      LinkedList localLinkedList = new LinkedList();
+      localLinkedList.add(new BasicNameValuePair("pushid", (String)localHashMap.get("pushid")));
+      localLinkedList.add(new BasicNameValuePair("trainnumber", (String)localHashMap.get("trainnumber")));
+      localLinkedList.add(new BasicNameValuePair("stationid", (String)localHashMap.get("stationid")));
+      if (localHashMap.get("departuredate") != null)
+        localLinkedList.add(new BasicNameValuePair("departuredate", (String)localHashMap.get("departuredate")));
+      this._registerTrainFetcher.getObjectAtUrl(MyApp.pushWebServiceUrl() + "/RegisterPushForTrain", localLinkedList);
+      this._queuedRegistrations.remove(0);
+
+
+      LinkedList localLinkedList = new LinkedList();
+      localLinkedList.add(new BasicNameValuePair("pushid", Integer.toString(this._webservicePushId.intValue())));
+      this._retrievePushFetcher.getObjectAtUrl(MyApp.pushWebServiceUrl() + "/RetrievePushRegistrations", localLinkedList);
+
+      this._registrationIdBeingRemoved = Integer.valueOf(this._pushes.getJSONObject(paramInt).getInt("PushRegistrationId"));
+      LinkedList localLinkedList = new LinkedList();
+      localLinkedList.add(new BasicNameValuePair("pushregistrationid", Integer.toString(this._registrationIdBeingRemoved.intValue())));
+      this._unregisterTrainFetcher.getObjectAtUrl(MyApp.pushWebServiceUrl() + "/UnregisterPushForTrain", localLinkedList);
+      return;
+
+/RegisterPush?identifier=<id>&platform=2&token=<token>&language=nl&delay=<delay>&weekend=<weekend>
+
+/RegisterPushForTrain?pushid=<webservice pushid>&trainnumber=<trainnumber-id>&stationid=<station id>&departuredate=<departure date>
+
+/RetrievePushRegistrations?pushid=<webservice pushid>
+
+/UnregisterPushForTrain?pushregistrationid=<registration id>

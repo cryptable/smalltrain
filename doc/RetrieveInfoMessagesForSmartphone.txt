@@ -1,0 +1,11 @@
+The code
+--------
+    setProgressBarIndeterminateVisibility(true);
+    LinkedList localLinkedList = new LinkedList();
+    localLinkedList.add(new BasicNameValuePair("language", getResources().getString(2131230720)));
+    localLinkedList.add(new BasicNameValuePair("detailLevel", "all"));
+    this._infosFetcher.getObjectAtUrl(MyApp.webServiceUrl() + "/RetrieveInfoMessagesForSmartPhone", localLinkedList);
+
+<done>
+
+/RetrieveInfoMessagesForSmartPhone?language=nl&detailLevel=all

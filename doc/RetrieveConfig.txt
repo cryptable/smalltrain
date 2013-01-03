@@ -1,0 +1,31 @@
+Retrieve Configuration
+----------------------
+GET /web/prd-irt/PublicCommunicationRestService.svc/RetrieveConfig HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+Accept-Encoding: gzip
+Authorization: OAuth oauth_consumer_key="Android", oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_timestamp="1345237497", oauth_nonce="4792190746394325451", oauth_signature="lR82d65GomSUi7wfoFvkiLbSx1A%3D"
+Host: services.infrabel.be
+Connection: Keep-Alive
+
+<Done>
+
+Response
+--------
+HTTP/1.1 200 OK
+Cache-Control: private
+Content-Type: text/html
+Content-Encoding: gzip
+Vary: Accept-Encoding
+Server: Microsoft-IIS/7.5
+RealTimeDataAvailable: True
+X-Stats-Code: 1
+X-Stats-Cache: 16
+X-Stats-Cache-Count: 2
+Server: Microsoft-IIS/7.5
+X-Powered-By: ASP.NET
+X-AspNet-Version: 4.0.30319
+X-Powered-By: ASP.NET
+Date: Fri, 17 Aug 2012 21:03:26 GMT
+Content-Length: 200
+
+{"DataValidityDate":"\/Date(1355007600000+0100)\/","MaxFutureSearchDays":null,"MaxPastSearchDays":7}

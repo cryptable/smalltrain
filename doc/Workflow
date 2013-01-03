@@ -1,0 +1,15 @@
+Startup of Android App
+----------------------
+- RetrieveConfig
+- RetrieveStatus
+
+4 Selections
+------------
+1) RetrieveStationSchedule (refresh function)
+2) RouteSearch
+3) Train (using train number)
+4) Disruptions (refresh function)
+
+Configurationn API
+------------------
+- /RetrieveStationList?LastUpdateDate=<date>

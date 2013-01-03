@@ -1,0 +1,14 @@
+The Code
+--------
+    localLinkedList.add(new BasicNameValuePair("departureStationId", String.valueOf(this._favourite.getDepartureId())));
+    localLinkedList.add(new BasicNameValuePair("arrivalStationId", String.valueOf(this._favourite.getArrivalId())));
+    localLinkedList.add(new BasicNameValuePair("dateTime", this._favourite.getUserSettings().dateTimeFromForWebService()));
+    localLinkedList.add(new BasicNameValuePair("searchType", String.valueOf(this._favourite.getUserSettings().getSearchType().ordinal())));
+    localLinkedList.add(new BasicNameValuePair("minTransferTime", String.valueOf(this._favourite.getUserSettings().getConnectionDelay())));
+    localLinkedList.add(new BasicNameValuePair("resultCountBefore", "0"));
+    localLinkedList.add(new BasicNameValuePair("resultCountAfter", "3"));
+    this._fetcher.getObjectAtUrl(MyApp.webServiceUrl() + "/RetrieveRoutes", localLinkedList);
+
+<done>
+
+/RetrieveRoutes?departureStationId=<departure station id>&arrivalStationId=<arrival station id>&dateTime=<date time for route>&searchType=1&minTransferTime=<connection delay>&resultCountBefore=0&resultCountAfter=3
