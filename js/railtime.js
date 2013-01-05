@@ -6,6 +6,8 @@ var Railtime = {
 
 	consumerSecret : null,
 
+	consumerKey : "Android",
+	
 	baseURL: "http://services.infrabel.be/web/prd-irt/PublicCommunicationRestService.svc",
 
 	language: "nl",
@@ -16,6 +18,11 @@ var Railtime = {
 
 	/* Setters */
 	/* Set OAuth key */
+	setConsumerKey : function(key) {
+		this.consumerKey = typeof key === 'string' ? key : null;
+	},
+	
+	/* Set OAuth secret */
 	setConsumerSecret : function(passphrase) {
 		this.consumerSecret = typeof passphrase === 'string' ? passphrase : null;
 	},
@@ -24,10 +31,12 @@ var Railtime = {
 	setBaseURL: function(url) {
 		this.baseURL = typeof url ==='string' ? url : "";
 	},
+	
 	/* set language for other languages then english */
 	setConnectionDelay: function(connectionDelay) {
 		this.connectionDelay = typeof connectionDelay ==='number' ? lang : 1000;
 	},
+	
 	/* Helper functions */
 	/* create oauth signature for the request */
 	sign : function(method, url, parameters) {
@@ -44,7 +53,7 @@ var Railtime = {
 		var nonce = OAuth.nonce(18);
 
 		message.parameters.push(["oauth_version", "1.0"]);
-		message.parameters.push(["oauth_consumer_key", "Android"]);
+		message.parameters.push(["oauth_consumer_key", this.consumerKey]);
 		message.parameters.push(["oauth_timestamp", timestamp]);
 		message.parameters.push(["oauth_nonce", nonce]);
 		message.parameters.push(["oauth_signature_method", "HMAC-SHA1"]);
