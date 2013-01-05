@@ -3,5 +3,4 @@
 *.pyo
 */.git/*
 doc/src
-doc/src
-specs/specsConfig.js
+specs/specsConfigKey.js
