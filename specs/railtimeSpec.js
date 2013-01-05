@@ -64,6 +64,15 @@ describe("Railtime functions", function() {
 		},
 		'{"ArrivalStationId":715,"DateTime":"\/Date(1356559099000+0100)\/","DepartureStationId":220,"Routes":[{"ArrivalDateTime":"\/Date(1356560580000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":23,"ArrivalDetected":false,"CommercialTypes":["IC"],"Connections":0,"DepartureDateTime":"\/Date(1356559020000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":24,"DepartureDetected":false,"HasWorksInfo":true,"PerturbationType":0,"ReservationRequired":false,"RouteModified":false,"Transports":[{"ArrivalDateTime":"\/Date(1356560580000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":23,"ArrivalDetected":false,"ArrivalStationId":715,"ArrivalTrack":"3","ArrivalTrackModified":false,"CommercialTypes":["IC"],"DepartureDateTime":"\/Date(1356559020000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":24,"DepartureDetected":false,"DepartureStationId":220,"DepartureTrack":"11","DepartureTrackModified":false,"DestinationStationId":1226,"HasWorksInfo":true,"IsImmobilized":false,"PerturbationType":0,"ReservationRequired":false,"RouteModified":false,"TransportType":1,"Vehicles":[{"ArrivalStationId":715,"DepartureDate":"\/Date(1356476400000+0100)\/","DepartureStationId":220,"VehicleId":"521"}]}],"TravelTime":25},{"ArrivalDateTime":"\/Date(1356562380000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"CommercialTypes":["IR"],"Connections":0,"DepartureDateTime":"\/Date(1356559920000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"HasWorksInfo":false,"PerturbationType":0,"ReservationRequired":false,"RouteModified":false,"Transports":[{"ArrivalDateTime":"\/Date(1356562380000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalStationId":715,"ArrivalTrack":"A","ArrivalTrackModified":false,"CommercialTypes":["IR"],"DepartureDateTime":"\/Date(1356559920000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureStationId":220,"DepartureTrack":"16","DepartureTrackModified":false,"DestinationStationId":715,"HasWorksInfo":false,"IsImmobilized":false,"PerturbationType":0,"ReservationRequired":false,"RouteModified":false,"TransportType":1,"Vehicles":[{"ArrivalStationId":715,"DepartureDate":"\/Date(1356476400000+0100)\/","DepartureStationId":220,"VehicleId":"4223"}]}],"TravelTime":41},{"ArrivalDateTime":"\/Date(1356563160000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"CommercialTypes":["L"],"Connections":0,"DepartureDateTime":"\/Date(1356560280000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"HasWorksInfo":false,"PerturbationType":0,"ReservationRequired":false,"RouteModified":false,"Transports":[{"ArrivalDateTime":"\/Date(1356563160000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalStationId":715,"ArrivalTrack":"B","ArrivalTrackModified":false,"CommercialTypes":["L"],"DepartureDateTime":"\/Date(1356560280000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureStationId":220,"DepartureTrack":"17","DepartureTrackModified":false,"DestinationStationId":715,"HasWorksInfo":false,"IsImmobilized":false,"PerturbationType":0,"ReservationRequired":false,"RouteModified":false,"TransportType":1,"Vehicles":[{"ArrivalStationId":715,"DepartureDate":"\/Date(1356476400000+0100)\/","DepartureStationId":220,"VehicleId":"3772"}]}],"TravelTime":48}],"SearchType":1}' 
  		]);
+ 		server.respondWith(new RegExp(".*\/RetrieveTrainSchedule\\?trainNumber=[0-9]+&requestedDate=[0-9]{4}-[0-9]{2}-[0-9]{2}%20[0-9]{2}%3A[0-9]{2}%3A[0-9]{2}&dateType=[1-9]&language=[nl|fr]"), 
+// 		server.respondWith(new RegExp(".*\/RetrieveTrainSchedule\\?trainNumber=[0-9]+.*"), 
+		[200,
+		{
+			"Content-Type": "text/html", 
+			"Content-Length": 262 
+		},
+		'{"CommercialTypes":["IR"],"DepartureDate":"\/Date(1357340400000+0100)\/","Destinations":[523],"IsInternational":false,"Justifications":null,"Origins":[37],"ReservationRequired":false,"Route":[{"ArrivalDateTime":null,"ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"DepartureDateTime":"\/Date(1357422180000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"IsImmobilized":false,"JoinInfos":null,"SplitInfos":null,"StationActive":true,"StationId":37,"StationStatus":0,"StopStatus":0,"Track":"13","TrackModified":false},{"ArrivalDateTime":"\/Date(1357422420000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"DepartureDateTime":"\/Date(1357422480000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"IsImmobilized":false,"JoinInfos":null,"SplitInfos":null,"StationActive":true,"StationId":139,"StationStatus":0,"StopStatus":0,"Track":"5","TrackModified":false},{"ArrivalDateTime":"\/Date(1357423020000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"DepartureDateTime":"\/Date(1357423080000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"IsImmobilized":false,"JoinInfos":null,"SplitInfos":null,"StationActive":true,"StationId":732,"StationStatus":0,"StopStatus":0,"Track":"3","TrackModified":false},{"ArrivalDateTime":"\/Date(1357423620000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"DepartureDateTime":"\/Date(1357423740000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"IsImmobilized":false,"JoinInfos":null,"SplitInfos":null,"StationActive":true,"StationId":541,"StationStatus":0,"StopStatus":0,"Track":"1","TrackModified":false},{"ArrivalDateTime":"\/Date(1357424340000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"DepartureDateTime":"\/Date(1357424640000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"IsImmobilized":false,"JoinInfos":null,"SplitInfos":null,"StationActive":true,"StationId":9,"StationStatus":0,"StopStatus":0,"Track":"2","TrackModified":false},{"ArrivalDateTime":"\/Date(1357425360000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"DepartureDateTime":"\/Date(1357425420000+0100)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"IsImmobilized":false,"JoinInfos":null,"SplitInfos":null,"StationActive":true,"StationId":326,"StationStatus":0,"StopStatus":0,"Track":"2","TrackModified":false},{"ArrivalDateTime":"\/Date(1357426200000+0100)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"DepartureDateTime":null,"DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"IsImmobilized":false,"JoinInfos":null,"SplitInfos":null,"StationActive":true,"StationId":523,"StationStatus":0,"StopStatus":0,"Track":"1","TrackModified":false}],"RouteModified":false,"TrainNumber":2922,"TrainStatus":0,"WorksInfos":null}'
+ 		]);
 	});
 
 	afterEach(function () { server.restore(); });
@@ -270,6 +279,38 @@ describe("Railtime functions", function() {
 		waitsFor(function() {
 			return flag;
 		}, "The message is RetrieveRoutes received" , 3000);
+
+		runs(function() {
+			expect(result.status).toMatch(200);
+		});
+	});
+
+	it("Test RetrieveTrainSchedule with all parameters", function() {
+		var flag = false;
+		var toDay = new Date();
+
+		runs(function () {
+			
+			Railtime.setConsumerKey(specsConfig.consumerKey);
+			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+
+			Railtime.retrieveTrainSchedule(
+				2922,					
+				toDay,
+				1,
+				function(status, responseText) { 
+					result.status = status;
+					result.responseText = responseText;
+					console.log("Callback called");
+					flag = true;
+				}
+			);
+		
+		});
+		
+		waitsFor(function() {
+			return flag;
+		}, "The message is RetrieveTrainSchedule received" , 3000);
 
 		runs(function() {
 			expect(result.status).toMatch(200);

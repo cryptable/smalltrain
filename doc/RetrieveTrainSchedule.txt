@@ -15,6 +15,9 @@ TrainDetailActivity.class
 
 /RetrieveTrainSchedule?trainNumber=<train id>&requestedDate=<date for the train-schedule>&dateType=1&language=nl
 
+Test IE:
+GET /web/prd-irt/PublicCommunicationRestService.svc/RetrieveStationSchedule?trainNumber=2922&requestedDate=2013-01-05%2010%3A18%3A33&dateType=1&language=nl HTTP/1.1
+
 POST /RetrieveRouteTrain
 
 trains=[JSON array for trains]&language=nl

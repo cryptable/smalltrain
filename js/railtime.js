@@ -245,7 +245,7 @@ var Railtime = {
 
 	retrieveTrainSchedule : function(trainNumber, requestedDate, dateType, callback) {
 		var method = "GET";
-		var url = this.baseURL + "/RetrieveStationSchedule";
+		var url = this.baseURL + "/RetrieveTrainSchedule";
 		var parameters = [];
 		var result;
 
