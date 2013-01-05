@@ -8,7 +8,6 @@ describe("Railtime functions", function() {
 		responseText: ""
 	};
 
-	var 
 	it("Test RetrieveConfig", function() {
 		flag = false;
 
