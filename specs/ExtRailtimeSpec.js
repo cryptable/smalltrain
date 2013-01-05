@@ -8,12 +8,13 @@ describe("Railtime functions", function() {
 		responseText: ""
 	};
 
+	var 
 	it("Test RetrieveConfig", function() {
 		flag = false;
 
 		runs(function () {
 			
-			Railtime.setConsumerSecret("7f9TZS4}{4NO6,t");
+			Railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
 			Railtime.retrieveConfig(function(status, responseText) { 
 				result.status = status;
@@ -39,7 +40,8 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerSecret("7f9TZS4}{4NO6,t");
+			Railtime.setConsumerKey(specsConfig.consumerKey);
+			Railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
 			Railtime.retrieveStatus(function(status, responseText) { 
 				result.status = status;
@@ -65,7 +67,9 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerSecret("7f9TZS4}{4NO6,t");
+			Railtime.setConsumerKey(specsConfig.consumerKey);
+			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+
 			beginDate = new Date();
 			/* Interval of 180 minutes = 3 hours */
 			endDate = new Date(beginDate.getTime() + 180*60000);
@@ -100,7 +104,8 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerSecret("7f9TZS4}{4NO6,t");
+			Railtime.setConsumerKey(specsConfig.consumerKey);
+			Railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
 			Railtime.retrieveStationList(null, function(status, responseText) { 
 				result.status = status;
@@ -127,7 +132,8 @@ describe("Railtime functions", function() {
 		
 		runs(function () {
 			
-			Railtime.setConsumerSecret("7f9TZS4}{4NO6,t");
+			Railtime.setConsumerKey(specsConfig.consumerKey);
+			Railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
 			Railtime.retrieveStationList(lastUpdateDate, function(status, responseText) { 
 				result.status = status;
@@ -153,7 +159,8 @@ describe("Railtime functions", function() {
 		
 		runs(function () {
 			
-			Railtime.setConsumerSecret("7f9TZS4}{4NO6,t");
+			Railtime.setConsumerKey(specsConfig.consumerKey);
+			Railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
 			Railtime.retrieveInfoMessagesForSmartPhone(function(status, responseText) { 
 				result.status = status;
@@ -179,7 +186,9 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerSecret("7f9TZS4}{4NO6,t");
+			Railtime.setConsumerKey(specsConfig.consumerKey);
+			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+
 			Railtime.retrieveRoutes(
 				220,					/* Brussel-Zuid */
 				715,					/* Leuven */
@@ -213,7 +222,9 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerSecret("7f9TZS4}{4NO6,t");
+			Railtime.setConsumerKey(specsConfig.consumerKey);
+			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+
 			Railtime.retrieveTrainSchedule(
 				2922,					
 				toDay,
