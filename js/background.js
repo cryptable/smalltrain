@@ -9,7 +9,10 @@ var smallTrain = {
 	
 	// Initialize the extension
 	onInit : function() {
+		if (this.isConfigured === false) {
 		
+			this.isConfigured === true;	
+		}
 	},
 	
 	// Perform the correct action when an Alarm is inistiated

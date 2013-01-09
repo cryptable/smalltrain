@@ -1,17 +1,21 @@
 <html>
 <head>
 	<title>Small Train</title>
-<script src="js/options.js"></script>
+	<script type="text/javascript" src="lib/sha1.js"></script>
+  	<script type="text/javascript" src="lib/oauth.js"></script>
+	<script src="js/railtime.js"></script>
 </head>
 <body>
-	<input type="text" id="consumer-key">
-	<input type="text" id="start-station">
-	<input type="text" id="end-station">
+	<div id="label">OAuth Consumer Secret</div> <input type="text" id="consumer-key">
+	<button id="refresh-button" style="font-weight:bold">Refresh</button>
+	<div id="label">Start station</div> <input type="text" id="start-station">
+	<div id="label">End station</div> <input type="text" id="end-station">
 	
 	<div id="footer">
 	  <button id="save-button" style="font-weight:bold">Save</button>
 	  <button id="cancel-button">Cancel</button>
 	</div>
 	
+	<script src="js/options.js"></script>
 </body>
 </html>
