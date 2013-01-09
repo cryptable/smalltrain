@@ -39,54 +39,51 @@ var optionsPage = function() {
 
 	// Private business processing
 	var enableDisable = function() {
-		if (consumerKey.value === "") {
+		if (consumerKey.value === undefined || consumerKey.value === "") {
 			saveButton.disabled = true;
 			cancelButton.disabled = true;
 			startStation.disabled = true;
 			endStation.disabled = true;
-		}
-		else {
-			chrome.storage.local.get("smalltrain.stationlist", function (items) {
-				if (items["smalltrain.stationlist"] === undefined) {
-					saveButton.disabled = true;
-					cancelButton.disabled = true;
-					startStation.disabled = true;
-					endStation.disabled = true;
-				}
-				else {
-					saveButton.disabled = false;
-					cancelButton.disabled = false;
-					startStation.disabled = false;
-					endStation.disabled = false;					
-				}
-			});				
+		} else {
+			if (stationList === undefined) {
+				saveButton.disabled = true;
+				cancelButton.disabled = true;
+				startStation.disabled = true;
+				endStation.disabled = true;
+			} else {
+				saveButton.disabled = false;
+				cancelButton.disabled = false;
+				startStation.disabled = false;
+				endStation.disabled = false;					
+			}
 		}
 	};
 	
+	// Read config from local storage
 	var readConfig = function () {
-		chrome.storage.local.get("smalltrain.consumerkey", function (items) {
-			if (items["smalltrain.consumerkey"] !== undefined){
-				consumerKey.value = items["smalltrain.consumerkey"]; 				
+		var configList = [ "smalltrain.consumerkey", "smalltrain.stationlist"];
+		
+		chrome.storage.local.get(configList,
+			function (items) {
+				if (items["smalltrain.consumerkey"] !== undefined){
+					consumerKey.value = items["smalltrain.consumerkey"]; 				
+				} else {
+					consumerKey.value = undefined;
+				}
+				if (items["smalltrain.stationlist"] !== undefined) {
+					stationList = items["smalltrain.stationlist"]; 				
+				} else {
+					stationList = undefined;
+				}
+				enableDisable();
 			}
-			else {
-				consumerKey.value = "";
-			} 				
-		});		
-		chrome.storage.local.get("smalltrain.stationlist", function (items) {
-			if (items["smalltrain.stationlist"] !== undefined) {
-				stationList = items["smalltrain.stationlist"]; 				
-			}
-			else {
-				stationList = null;
-			} 				
-		});		
+		);
 	};
 	
 	// optionsPage.customDomainsTextbox.addEventListener('input', markDirty);
 	return {
 		initPage: function() {
 			readConfig();
-			enableDisable();		
 		}
 	};
 }();
