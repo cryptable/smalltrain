@@ -8,8 +8,14 @@
 <body>
 	<div id="label">OAuth Consumer Secret</div> <input type="text" id="consumer-key">
 	<button id="refresh-button" style="font-weight:bold">Refresh</button>
-	<div id="label">Start station</div> <input type="text" id="start-station">
-	<div id="label">End station</div> <input type="text" id="end-station">
+	<div class="ui-widget">
+	  <label for="start-station">Start station: </label>
+	  <input type="text" id="start-station" />
+	</div>
+	<div class="ui-widget">
+	  <label for="end-station">End station: </label>
+	  <input type="text" id="end-station" />
+	</div>
 	
 	<div id="footer">
 	  <button id="save-button" style="font-weight:bold">Save</button>

@@ -11,11 +11,22 @@ var optionsPage = function() {
 
 	// set actions to the buttons
 	saveButton.addEventListener('click', function() {
-		
+		if (startStation.value !== "") {
+			chrome.storage.local.set({ "smalltrain.startStation" : startStation.value}, function() {
+				return;
+			});
+		}
+		if (endStation.value !== "") {
+			chrome.storage.local.set({ "smalltrain.endStation" : endStation.value}, function() {
+				return;
+			});
+		}
 	});
+	
 	cancelButton.addEventListener('click', function() {
-		
+		clearStations();	
 	});
+	
 	document.getElementById("refresh-button").addEventListener('click', function() {
 		Railtime.setConsumerSecret(consumerKey.value);
 		Railtime.retrieveStationList(null, function(status, responseText) {
@@ -36,6 +47,15 @@ var optionsPage = function() {
 		});
 	});	
 	
+	startStation.addEventListener("keyup", function () {
+		var searchValue = startStation.value;
+		
+		if (searchValue.length > 3) {
+			searchStationList(searchValue, 1, function (name, value) {
+				startStation.value = name;
+			});
+		}
+	});	
 
 	// Private business processing
 	var enableDisable = function() {
@@ -79,6 +99,25 @@ var optionsPage = function() {
 			}
 		);
 	};
+	
+	var searchStationList = function(searchCriteria, max_values, callback) {
+		var i = 0, 
+			max = 0,
+			result = [],
+			station = null;
+
+		for (i=0, max = stationList.length; i<max; i+=1) {
+			station = stationList[i];
+			// Search occurences beginning of a word 
+			if (station["NameEN"].search(new RegExp("/^"+searchCriteria+".*/i")) !== -1) {
+				result.push(station);
+				if (callback !== undefined) {
+					callback(station["NameEN"], station);
+				}
+			}
+		}
+		return result;		
+	}
 	
 	// optionsPage.customDomainsTextbox.addEventListener('input', markDirty);
 	return {
