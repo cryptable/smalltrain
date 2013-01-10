@@ -1,4 +1,10 @@
 
+
+/**
+ * class for the option page
+ * 
+ * @class optionsPage
+ **/
 var optionsPage = function() {
 	var stationList = null;
 	
@@ -57,7 +63,12 @@ var optionsPage = function() {
 		}
 	});	
 
-	// Private business processing
+	/**
+	 * enalbe and disable the GUI
+	 * 
+	 * @private
+	 * @method enableDisable
+	 */
 	var enableDisable = function() {
 		if (consumerKey.value === undefined || consumerKey.value === "") {
 			saveButton.disabled = true;
@@ -79,7 +90,12 @@ var optionsPage = function() {
 		}
 	};
 	
-	// Read config from local storage
+	/** 
+	 * Read config from local storage
+	 * 
+	 * @private
+	 * @method readConfig
+	 */
 	var readConfig = function () {
 		var configList = [ "smalltrain.consumerkey", "smalltrain.stationlist"];
 		
@@ -100,16 +116,26 @@ var optionsPage = function() {
 		);
 	};
 	
+	/**
+	 * search a station in the station Array
+	 * 
+	 * @private
+	 * @method searchStationList
+	 * @param {String} searchCriteria The string to search for in the name of the station
+	 * @param {String} max_values maximum number of value returns
+	 * @param {String} callback function which is calledback when one result is found
+	 * @return {Array} Array of objects to the station (see station object)
+	 */ 
 	var searchStationList = function(searchCriteria, max_values, callback) {
-		var i = 0, 
+		var	i = 0,
 			max = 0,
 			result = [],
 			station = null;
 
-		for (i=0, max = stationList.length; i<max; i+=1) {
+		for (i = 0, max = stationList.length; i < max; i++) {
 			station = stationList[i];
 			// Search occurences beginning of a word 
-			if (station["NameEN"].search(new RegExp("/^"+searchCriteria+".*/i")) !== -1) {
+			if (station["NameEN"].search(new RegExp("^" + searchCriteria + ".*","i")) !== -1) {
 				result.push(station);
 				if (callback !== undefined) {
 					callback(station["NameEN"], station);
@@ -119,8 +145,12 @@ var optionsPage = function() {
 		return result;		
 	}
 	
-	// optionsPage.customDomainsTextbox.addEventListener('input', markDirty);
 	return {
+		/*
+		 * intialized the option pages
+		 * 
+		 * @method initPage
+		 */ 
 		initPage: function() {
 			readConfig();
 		}
