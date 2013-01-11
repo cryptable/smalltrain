@@ -9,7 +9,7 @@ var optionsPage = function() {
 	var stationList = null;
 	var startStationObj = null;
 	var endStationObj = null;
-		
+
 	// Set variables to elements
 	var consumerKey = document.getElementById("consumer-key");
 	var startStation = document.getElementById("start-station");
@@ -67,6 +67,9 @@ var optionsPage = function() {
 					});
 					response(stationsArray);
 				},
+				select: function(event, ui) {
+					startStationObj = searchStationInList(ui.item.value);
+				}
 			});
 		}
 		enableDisable();
@@ -83,6 +86,9 @@ var optionsPage = function() {
 						stationsArray.push(name);
 					});
 					response(stationsArray);
+				},
+				select: function(event, ui) {
+					endStationObj = searchStationInList(ui.item.value);
 				}
 			});
 		}
@@ -108,14 +114,8 @@ var optionsPage = function() {
 				startStation.disabled = true;
 				endStation.disabled = true;
 			} else {
-    			var station1 = searchStationInList(startStation.value);
-    			var station2 = searchStationInList(endStation.value);
-
-				if (((station1) && (station1["NameEN"] === startStation.value)) &&
-				    ((station2) && (station2["NameEN"] === endStation.value))) {
+				if (startStationObj && endStationObj) {
 					saveButton.disabled = false;
-					startStationObj = station1;
-					endStationObj = station2;				    	
 				} else {
 					saveButton.disabled = true;				
 				}
@@ -211,12 +211,13 @@ var optionsPage = function() {
 		var	i = 0,
 			max = 0,
 			result = [],
+			re = new RegExp("^" + searchCriteria + ".*","i");
 			station = null;
 
 		for (i = 0, cnt = 0, max = stationList.length; (i < max) && (cnt < max_values); i++) {
 			station = stationList[i];
 			// Search occurences beginning of a word 
-			if (station["NameEN"].search(new RegExp("^" + searchCriteria + ".*","i")) !== -1) {
+			if (station["NameEN"].search(re) !== -1) {
 				result.push(station);
 				if (callback !== undefined) {
 					callback(station["NameEN"], station);
