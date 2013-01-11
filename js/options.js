@@ -55,45 +55,34 @@ var optionsPage = function() {
 		});
 	});	
 	
-	startStation.addEventListener("keyup", function () {
-		var searchValue = startStation.value;
-		
-		if (searchValue.length > 3) {
-			$("#start-station").autocomplete({
-				source: function (request, response) {
-					var stationsArray = []
-					var stations = searchStationsInList(request.term, 10, function(name, station) {
-						stationsArray.push(name);
-					});
-					response(stationsArray);
-				},
-				select: function(event, ui) {
-					startStationObj = searchStationInList(ui.item.value);
-				}
+	$("#start-station").autocomplete({
+		source: function (request, response) {
+			var stationsArray = []
+			var stations = searchStationsInList(request.term, 10, function(name, station) {
+				stationsArray.push(name);
 			});
+			response(stationsArray);
+		},
+		select: function(event, ui) {
+			startStationObj = searchStationInList(ui.item.value);
+			enableDisable();
 		}
-		enableDisable();
-	});	
+	});
 
-	endStation.addEventListener("keyup", function () {
-		var searchValue = endStation.value;
-		
-		if (searchValue.length > 3) {
-			$("#end-station").autocomplete({
-				source: function (request, response) {
-					var stationsArray = []
-					var stations = searchStationsInList(request.term, 10, function(name, station) {
-						stationsArray.push(name);
-					});
-					response(stationsArray);
-				},
-				select: function(event, ui) {
-					endStationObj = searchStationInList(ui.item.value);
-				}
+	$("#end-station").autocomplete({
+		minLength: 3,
+		source: function (request, response) {
+			var stationsArray = []
+			var stations = searchStationsInList(request.term, 10, function(name, station) {
+				stationsArray.push(name);
 			});
+			response(stationsArray);
+		},
+		select: function(event, ui) {
+			endStationObj = searchStationInList(ui.item.value);
+			enableDisable();
 		}
-		enableDisable();
-	});	
+	});
 	
 	/**
 	 * enalbe and disable the GUI
