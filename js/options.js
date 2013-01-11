@@ -56,6 +56,7 @@ var optionsPage = function() {
 	});	
 	
 	$("#start-station").autocomplete({
+		minLength: 3,
 		source: function (request, response) {
 			var stationsArray = []
 			var stations = searchStationsInList(request.term, 10, function(name, station) {
