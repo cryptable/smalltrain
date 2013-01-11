@@ -7,7 +7,9 @@
  **/
 var optionsPage = function() {
 	var stationList = null;
-	
+	var startStationObj = null;
+	var endStationObj = null;
+		
 	// Set variables to elements
 	var consumerKey = document.getElementById("consumer-key");
 	var startStation = document.getElementById("start-station");
@@ -17,13 +19,13 @@ var optionsPage = function() {
 
 	// set actions to the buttons
 	saveButton.addEventListener('click', function() {
-		if (startStation.value !== "") {
-			chrome.storage.local.set({ "smalltrain.startStation" : startStation.value}, function() {
+		if (startStationObj !== null) {
+			chrome.storage.local.set({ "smalltrain.startStation" : startStationObj}, function() {
 				return;
 			});
 		}
-		if (endStation.value !== "") {
-			chrome.storage.local.set({ "smalltrain.endStation" : endStation.value}, function() {
+		if (endStationObj !== null) {
+			chrome.storage.local.set({ "smalltrain.endStation" : endStationObj}, function() {
 				return;
 			});
 		}
@@ -57,12 +59,36 @@ var optionsPage = function() {
 		var searchValue = startStation.value;
 		
 		if (searchValue.length > 3) {
-			searchStationList(searchValue, 1, function (name, value) {
-				startStation.value = name;
+			$("#start-station").autocomplete({
+				source: function (request, response) {
+					var stationsArray = []
+					var stations = searchStationsInList(request.term, 10, function(name, station) {
+						stationsArray.push(name);
+					});
+					response(stationsArray);
+				},
 			});
 		}
+		enableDisable();
 	});	
 
+	endStation.addEventListener("keyup", function () {
+		var searchValue = endStation.value;
+		
+		if (searchValue.length > 3) {
+			$("#end-station").autocomplete({
+				source: function (request, response) {
+					var stationsArray = []
+					var stations = searchStationsInList(request.term, 10, function(name, station) {
+						stationsArray.push(name);
+					});
+					response(stationsArray);
+				}
+			});
+		}
+		enableDisable();
+	});	
+	
 	/**
 	 * enalbe and disable the GUI
 	 * 
@@ -82,7 +108,17 @@ var optionsPage = function() {
 				startStation.disabled = true;
 				endStation.disabled = true;
 			} else {
-				saveButton.disabled = false;
+    			var station1 = searchStationInList(startStation.value);
+    			var station2 = searchStationInList(endStation.value);
+
+				if (((station1) && (station1["NameEN"] === startStation.value)) &&
+				    ((station2) && (station2["NameEN"] === endStation.value))) {
+					saveButton.disabled = false;
+					startStationObj = station1;
+					endStationObj = station2;				    	
+				} else {
+					saveButton.disabled = true;				
+				}
 				cancelButton.disabled = false;
 				startStation.disabled = false;
 				endStation.disabled = false;					
@@ -97,19 +133,36 @@ var optionsPage = function() {
 	 * @method readConfig
 	 */
 	var readConfig = function () {
-		var configList = [ "smalltrain.consumerkey", "smalltrain.stationlist"];
+		var configList = [ "smalltrain.consumerkey", 
+		                   "smalltrain.stationlist",
+		                   "smalltrain.startStation",
+		                   "smalltrain.endStation"];
 		
 		chrome.storage.local.get(configList,
 			function (items) {
 				if (items["smalltrain.consumerkey"] !== undefined){
 					consumerKey.value = items["smalltrain.consumerkey"]; 				
 				} else {
-					consumerKey.value = undefined;
+					consumerKey.value = "";
 				}
 				if (items["smalltrain.stationlist"] !== undefined) {
 					stationList = items["smalltrain.stationlist"]; 				
-				} else {
+				} else {Bruu
 					stationList = undefined;
+				}
+				if (items["smalltrain.startStation"] !== undefined) {
+					startStationObj = items["smalltrain.startStation"];
+					startStation.value = startStationObj["NameEN"]; 			
+				} else {
+					startStationObj = undefined;
+					startStation.value = "";
+				}
+				if (items["smalltrain.endStation"] !== undefined) {
+					endStationObj = items["smalltrain.endStation"]; 				
+					endStation.value = endStationObj["NameEN"]; 			
+				} else {
+					endStationObj = undefined;
+					endStation.value = ""; 			
 				}
 				enableDisable();
 			}
@@ -117,7 +170,35 @@ var optionsPage = function() {
 	};
 	
 	/**
-	 * search a station in the station Array
+	 * search one station in the station Array
+	 * 
+	 * @private
+	 * @method searchStationList
+	 * @param {String} searchCriteria The string to search for in the name of the station
+	 * @param {String} callback function which is calledback when one result is found
+	 * @return {Array} Array of objects to the station (see station object)
+	 */ 
+	var searchStationInList = function(searchCriteria, callback) {
+		var	i = 0,
+			max = 0,
+			station = null;
+
+		for (i = 0, max = stationList.length; i < max; i++) {
+			station = stationList[i];
+			// Search occurences beginning of a word 
+			if (station["NameEN"] === searchCriteria) {
+				if (callback !== undefined) {
+					callback(station["NameEN"], station);
+				}
+				return station;
+			}
+		}
+		
+		return null;		
+	}
+	
+	/**
+	 * search all stations in the station Array
 	 * 
 	 * @private
 	 * @method searchStationList
@@ -126,13 +207,13 @@ var optionsPage = function() {
 	 * @param {String} callback function which is calledback when one result is found
 	 * @return {Array} Array of objects to the station (see station object)
 	 */ 
-	var searchStationList = function(searchCriteria, max_values, callback) {
+	var searchStationsInList = function(searchCriteria, max_values, callback) {
 		var	i = 0,
 			max = 0,
 			result = [],
 			station = null;
 
-		for (i = 0, max = stationList.length; i < max; i++) {
+		for (i = 0, cnt = 0, max = stationList.length; (i < max) && (cnt < max_values); i++) {
 			station = stationList[i];
 			// Search occurences beginning of a word 
 			if (station["NameEN"].search(new RegExp("^" + searchCriteria + ".*","i")) !== -1) {
@@ -140,6 +221,7 @@ var optionsPage = function() {
 				if (callback !== undefined) {
 					callback(station["NameEN"], station);
 				}
+				cnt++;
 			}
 		}
 		return result;		
