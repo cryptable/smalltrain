@@ -13,9 +13,9 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
-			Railtime.retrieveConfig(function(status, responseText) { 
+			railtime.retrieveConfig(function(status, responseText) { 
 				result.status = status;
 				result.responseText = responseText;
 				console.log("Callback called");
@@ -39,10 +39,10 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
-			Railtime.retrieveStatus(function(status, responseText) { 
+			railtime.retrieveStatus(function(status, responseText) { 
 				result.status = status;
 				result.responseText = responseText;
 				console.log("Callback called");
@@ -66,13 +66,13 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 
 			beginDate = new Date();
 			/* Interval of 180 minutes = 3 hours */
 			endDate = new Date(beginDate.getTime() + 180*60000);
-			Railtime.retrieveStationSchedule(
+			railtime.retrieveStationSchedule(
 				6,
 				beginDate,
 				endDate,
@@ -103,10 +103,10 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
-			Railtime.retrieveStationList(null, function(status, responseText) { 
+			railtime.retrieveStationList(null, function(status, responseText) { 
 				result.status = status;
 				result.responseText = responseText;
 				console.log("Callback called");
@@ -131,10 +131,10 @@ describe("Railtime functions", function() {
 		
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
-			Railtime.retrieveStationList(lastUpdateDate, function(status, responseText) { 
+			railtime.retrieveStationList(lastUpdateDate, function(status, responseText) { 
 				result.status = status;
 				result.responseText = responseText;
 				console.log("Callback called");
@@ -158,10 +158,10 @@ describe("Railtime functions", function() {
 		
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
-			Railtime.retrieveInfoMessagesForSmartPhone(function(status, responseText) { 
+			railtime.retrieveInfoMessagesForSmartPhone(function(status, responseText) { 
 				result.status = status;
 				result.responseText = responseText;
 				console.log("Callback called");
@@ -185,10 +185,10 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 
-			Railtime.retrieveRoutes(
+			railtime.retrieveRoutes(
 				220,					/* Brussel-Zuid */
 				715,					/* Leuven */
 				toDay,
@@ -221,10 +221,10 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 
-			Railtime.retrieveTrainSchedule(
+			railtime.retrieveTrainSchedule(
 				2922,					
 				toDay,
 				1,

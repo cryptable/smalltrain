@@ -5,7 +5,7 @@
  * 
  * @class optionsPage
  **/
-var optionsPage = function() {
+var optionsPage = (function() {
 	var stationList = null;
 	var startStationObj = null;
 	var endStationObj = null;
@@ -36,13 +36,14 @@ var optionsPage = function() {
 	});
 	
 	document.getElementById("refresh-button").addEventListener('click', function() {
-		Railtime.setConsumerSecret(consumerKey.value);
-		Railtime.retrieveStationList(null, function(status, responseText) {
+		railtime.setConsumerSecret(consumerKey.value);
+		railtime.retrieveStationList(null, function(status, responseText) {
 			if (status === 200) {
 				stationList = JSON.parse(responseText);
 				chrome.storage.local.set({ "smalltrain.stationlist" : stationList }, function() {
 					return;
 				});
+				enableDisable();
 			} else {
 				alert("Retrieve stations DB failed");
 			}
@@ -137,7 +138,7 @@ var optionsPage = function() {
 				}
 				if (items["smalltrain.stationlist"] !== undefined) {
 					stationList = items["smalltrain.stationlist"]; 				
-				} else {Bruu
+				} else {
 					stationList = undefined;
 				}
 				if (items["smalltrain.startStation"] !== undefined) {
@@ -228,7 +229,7 @@ var optionsPage = function() {
 			readConfig();
 		}
 	};
-}();
+}());
 
 document.addEventListener('DOMContentLoaded', function () {
   optionsPage.initPage();

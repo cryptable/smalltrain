@@ -13,7 +13,7 @@ describe("Railtime functions", function() {
 		server = sinon.fakeServer.create();
 		console.log("create fake server");
 		server.autoRespond = true;
-		server.respondWith(Railtime.baseURL + "/RetrieveConfig", 
+		server.respondWith(new RegExp(".*\/RetrieveConfig"), 
 		[200, 
 		{
 			"Content-Type": "text/html", 
@@ -21,7 +21,7 @@ describe("Railtime functions", function() {
 		}, 
 		'{"DataValidityDate":"\/Date(1355007600000+0100)\/","MaxFutureSearchDays":null,"MaxPastSearchDays":7}'
 		]);
-		server.respondWith(Railtime.baseURL + "/RetrieveStatus", 
+		server.respondWith(new RegExp(".*\/RetrieveStatus"), 
 		[200, 
 		{
 			"Content-Type": "text/html", 
@@ -32,7 +32,7 @@ describe("Railtime functions", function() {
 			console.log("Station Id=" + stationId);
 			xhr.respond(200, { "Content-Type": "text/html" }, '{"DateTimeFrom":"\/Date(1345237500000+0200)\/","DateTimeTo":"\/Date(1345248300000+0200)\/","Id":' + stationId + ',"SearchType":1,"StationActive":true,"Trains":[{"ArrivalDateTime":"\/Date(1345237680000+0200)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"CommercialTypes":["IR"],"DepartureDate":"\/Date(1345154400000+0200)\/","DepartureDateTime":"\/Date(1345237980000+0200)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"Destinations":[523],"HasWorksInfo":false,"IsImmobilized":false,"Origins":[37],"ReservationRequired":false,"RouteModified":false,"StopStatus":0,"Track":"2","TrackModified":false,"TrainNumber":2922,"TrainStatus":0},{"ArrivalDateTime":"\/Date(1345237980000+0200)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"CommercialTypes":["L"],"DepartureDate":"\/Date(1345154400000+0200)\/","DepartureDateTime":"\/Date(1345238040000+0200)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"Destinations":[715],"HasWorksInfo":false,"IsImmobilized":false,"Origins":[523],"ReservationRequired":false,"RouteModified":false,"StopStatus":0,"Track":"1","TrackModified":false,"TrainNumber":2493,"TrainStatus":0},{"ArrivalDateTime":"\/Date(1345238760000+0200)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"CommercialTypes":["IC"],"DepartureDate":"\/Date(1345154400000+0200)\/","DepartureDateTime":"\/Date(1345238820000+0200)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"Destinations":[523],"HasWorksInfo":true,"IsImmobilized":false,"Origins":[642,166],"ReservationRequired":false,"RouteModified":false,"StopStatus":0,"Track":"3","TrackModified":false,"TrainNumber":1521,"TrainStatus":0},{"ArrivalDateTime":"\/Date(1345239600000+0200)\/","ArrivalDateTimeModified":false,"ArrivalDelay":0,"ArrivalDetected":false,"ArrivalDetour":false,"CommercialTypes":["L"],"DepartureDate":"\/Date(1345154400000+0200)\/","DepartureDateTime":"\/Date(1345239660000+0200)\/","DepartureDateTimeModified":false,"DepartureDelay":0,"DepartureDetected":false,"DepartureDetour":false,"Destinations":[715],"HasWorksInfo":false,"IsImmobilized":false,"Origins":[37],"ReservationRequired":false,"RouteModified":false,"StopStatus":0,"Track":"1","TrackModified":false,"TrainNumber":2872,"TrainStatus":0}]}');
 		});
-		server.respondWith(Railtime.baseURL + "/RetrieveStationList", 
+		server.respondWith(new RegExp(".*\/RetrieveStationList"), 
 		[200,
 		{
 			"Content-Type": "text/html", 
@@ -82,10 +82,10 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
-			Railtime.retrieveConfig(function(status, responseText) { 
+			railtime.retrieveConfig(function(status, responseText) { 
 				result.status = status;
 				result.responseText = responseText;
 				console.log("Callback called");
@@ -109,10 +109,10 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
-			Railtime.retrieveStatus(function(status, responseText) { 
+			railtime.retrieveStatus(function(status, responseText) { 
 				result.status = status;
 				result.responseText = responseText;
 				console.log("Callback called");
@@ -136,13 +136,13 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 
 			beginDate = new Date();
 			/* Interval of 180 minutes = 3 hours */
 			endDate = new Date(beginDate.getTime() + 180*60000);
-			Railtime.retrieveStationSchedule(
+			railtime.retrieveStationSchedule(
 				6,
 				beginDate,
 				endDate,
@@ -173,10 +173,10 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
-			Railtime.retrieveStationList(null, function(status, responseText) { 
+			railtime.retrieveStationList(null, function(status, responseText) { 
 				result.status = status;
 				result.responseText = responseText;
 				console.log("Callback called");
@@ -201,10 +201,10 @@ describe("Railtime functions", function() {
 		
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
-			Railtime.retrieveStationList(lastUpdateDate, function(status, responseText) { 
+			railtime.retrieveStationList(lastUpdateDate, function(status, responseText) { 
 				result.status = status;
 				result.responseText = responseText;
 				console.log("Callback called");
@@ -228,10 +228,10 @@ describe("Railtime functions", function() {
 		
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 		
-			Railtime.retrieveInfoMessagesForSmartPhone(function(status, responseText) { 
+			railtime.retrieveInfoMessagesForSmartPhone(function(status, responseText) { 
 				result.status = status;
 				result.responseText = responseText;
 				console.log("Callback called");
@@ -255,10 +255,10 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 
-			Railtime.retrieveRoutes(
+			railtime.retrieveRoutes(
 				220,					/* Brussel-Zuid */
 				715,					/* Leuven */
 				toDay,
@@ -291,10 +291,10 @@ describe("Railtime functions", function() {
 
 		runs(function () {
 			
-			Railtime.setConsumerKey(specsConfig.consumerKey);
-			Railtime.setConsumerSecret(specsConfig.consumerSecret);
+			railtime.setConsumerKey(specsConfig.consumerKey);
+			railtime.setConsumerSecret(specsConfig.consumerSecret);
 
-			Railtime.retrieveTrainSchedule(
+			railtime.retrieveTrainSchedule(
 				2922,					
 				toDay,
 				1,

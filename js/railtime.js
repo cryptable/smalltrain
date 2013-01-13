@@ -3,7 +3,7 @@
  * 
  * @class railtime
  */
-var railtime = function() {
+var railtime = (function() {
 
 	/* Construtor */
 	var consumerSecret = null,
@@ -25,7 +25,7 @@ var railtime = function() {
 	 */
 	var sign = function(method, url, parameters) {
 		var accessor = {
-			consumerSecret : this.consumerSecret,
+			consumerSecret : consumerSecret,
 			tokenSecret : ""
 		};
 		var message = {
@@ -37,7 +37,7 @@ var railtime = function() {
 		var nonce = OAuth.nonce(18);
 
 		message.parameters.push(["oauth_version", "1.0"]);
-		message.parameters.push(["oauth_consumer_key", this.consumerKey]);
+		message.parameters.push(["oauth_consumer_key", consumerKey]);
 		message.parameters.push(["oauth_timestamp", timestamp]);
 		message.parameters.push(["oauth_nonce", nonce]);
 		message.parameters.push(["oauth_signature_method", "HMAC-SHA1"]);
@@ -89,7 +89,7 @@ var railtime = function() {
 			console.log(url + "?" + OAuth.formEncode(parameters));
 		}
 		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xhr.setRequestHeader("Authorization", this.sign(method, url, parameters));
+		xhr.setRequestHeader("Authorization", sign(method, url, parameters));
 		xhr.send(null);
 	};
 
@@ -123,7 +123,7 @@ var railtime = function() {
 		 * @param {String}  the consumer key for the platform (Android (default), iPhone) 
 		 */ 
 		setConsumerKey : function(key) {
-			this.consumerKey = typeof key === 'string' ? key : null;
+			consumerKey = typeof key === 'string' ? key : null;
 		},
 		
 		/** 
@@ -133,7 +133,7 @@ var railtime = function() {
 		 * @param {String}  the consumer secret for the platform (Android (default), iPhone), which has correspondense to the key. This can be found in the Android App.
 		 */ 
 		setConsumerSecret : function(passphrase) {
-			this.consumerSecret = typeof passphrase === 'string' ? passphrase : null;
+			consumerSecret = typeof passphrase === 'string' ? passphrase : null;
 		},
 	
 		/** 
@@ -143,7 +143,7 @@ var railtime = function() {
 		 * @param {String}  string with the webservice URL.
 		 */ 
 		setBaseURL: function(url) {
-			this.baseURL = typeof url ==='string' ? url : "";
+			baseURL = typeof url ==='string' ? url : "";
 		},
 		
 		/** 
@@ -153,7 +153,7 @@ var railtime = function() {
 		 * @param {Number} delay timeout
 		 */ 
 		setConnectionDelay: function(connectionDelay) {
-			this.connectionDelay = typeof connectionDelay ==='number' ? lang : 1000;
+			connectionDelay = typeof connectionDelay ==='number' ? lang : 1000;
 		},
 		
 		/**
@@ -164,8 +164,8 @@ var railtime = function() {
 		 */
 		retrieveConfig : function(callback) {
 			var method = "GET";
-			var url = this.baseURL + "/RetrieveConfig";
-			var result = this.send(method, url, null, callback);
+			var url = baseURL + "/RetrieveConfig";
+			var result = send(method, url, null, callback);
 	
 			return result;
 		},
@@ -178,8 +178,8 @@ var railtime = function() {
 		 */
 		retrieveStatus : function(callback) {
 			var method = "GET";
-			var url = this.baseURL + "/RetrieveStatus";
-			var result = this.send(method, url, null, callback);
+			var url = baseURL + "/RetrieveStatus";
+			var result = send(method, url, null, callback);
 			
 			return result;
 		},
@@ -196,7 +196,7 @@ var railtime = function() {
 		 */
 		retrieveStationSchedule : function(stationId, beginDate, endDate, searchType, maxResponses, callback) {
 			var method = "GET";
-			var url = this.baseURL + "/RetrieveStationSchedule";
+			var url = baseURL + "/RetrieveStationSchedule";
 			var parameters = [];
 			var result;
 	
@@ -227,12 +227,12 @@ var railtime = function() {
 				throw "Hmmm, beginDate greater then endDate";
 			/* stationID=9&dateTimeFrom=2012-08-17+23%3A05%3A00&dateTimeTo=2012-08-18+02%3A05%3A00&searchType=1&maxResults=15 */		
 			parameters.push(["stationID", stationId.toString()]);
-			parameters.push(["dateTimeFrom", this.convertDate(beginDate)]);
-			parameters.push(["dateTimeTo", this.convertDate(endDate)]);
+			parameters.push(["dateTimeFrom", convertDate(beginDate)]);
+			parameters.push(["dateTimeTo", convertDate(endDate)]);
 			parameters.push(["searchType", searchType.toString()]);
 			parameters.push(["maxResults", maxResponses.toString()]);
 	
-			return this.send(method, url, parameters, callback);
+			return send(method, url, parameters, callback);
 		},
 		
 		/**
@@ -244,17 +244,17 @@ var railtime = function() {
 		 */
 		retrieveStationList: function(lastUpdateDate, callback) {
 			var method = "GET";
-			var url = this.baseURL + "/RetrieveStationList";
+			var url = baseURL + "/RetrieveStationList";
 			var parameters = [];
 	
 			if (Object.prototype.toString.call(lastUpdateDate) === '[object Date]') {
-				parameters.push(["LastUpdateDate", this.convertDate(lastUpdateDate)])
+				parameters.push(["LastUpdateDate", convertDate(lastUpdateDate)])
 			}
 			else {
 				parameters = null;
 			}
 					
-			return this.send(method, url, parameters, callback);
+			return send(method, url, parameters, callback);
 		}, 
 		
 		/**
@@ -265,9 +265,9 @@ var railtime = function() {
 		 */
 		retrieveInfoMessagesForSmartPhone: function(callback) {
 			var method = "GET";
-			var url = this.baseURL + "/RetrieveInfoMessagesForSmartPhone?language=" + this.language + "&detailLevel=all";
+			var url = baseURL + "/RetrieveInfoMessagesForSmartPhone?language=" + language + "&detailLevel=all";
 					
-			return this.send(method, url, null, callback);
+			return send(method, url, null, callback);
 		}, 
 		
 		/**
@@ -285,7 +285,7 @@ var railtime = function() {
 		 */
 		retrieveRoutes : function(departureStationId, arrivalStationId, dateTime, searchType, minTransferTime, resultCountBefore, resultCountAfter, callback) {
 			var method = "GET";
-			var url = this.baseURL + "/RetrieveRoutes";
+			var url = baseURL + "/RetrieveRoutes";
 			var parameters = [];
 			var result;
 			
@@ -293,7 +293,7 @@ var railtime = function() {
 			if (typeof searchType === "undefined")
 				searchType = 1;
 			if (typeof minTransferTime === "undefined")
-				minTransferTime = this.connectionDelay;
+				minTransferTime = connectionDelay;
 			if (typeof resultCountBefore === "undefined")
 				resultCountBefore = 0;
 			if (typeof resultCountAfter === "undefined")
@@ -317,13 +317,13 @@ var railtime = function() {
 			
 			parameters.push(["departureStationId", departureStationId.toString()]);
 			parameters.push(["arrivalStationId", arrivalStationId.toString()]);
-			parameters.push(["dateTime", this.convertDate(dateTime)]);
+			parameters.push(["dateTime", convertDate(dateTime)]);
 			parameters.push(["searchType", searchType.toString()]);
 			parameters.push(["minTransferTime", minTransferTime.toString()]);
 			parameters.push(["resultCountBefore", resultCountBefore.toString()]);
 			parameters.push(["resultCountAfter", resultCountAfter.toString()]);
 	
-			return this.send(method, url, parameters, callback);
+			return send(method, url, parameters, callback);
 		},
 	
 		/**
@@ -338,7 +338,7 @@ var railtime = function() {
 		retrieveTrainSchedule : function(trainNumber, requestedDate, dateType, callback) {
 		/* RetrieveTrainSchedule?trainNumber=<train id>&requestedDate=<date for the train-schedule>&dateType=1&language=nl */
 			var method = "GET";
-			var url = this.baseURL + "/RetrieveTrainSchedule";
+			var url = baseURL + "/RetrieveTrainSchedule";
 			var parameters = [];
 			var result;
 	
@@ -357,12 +357,12 @@ var railtime = function() {
 				throw "Ooooo, dateType validation failed";
 			
 			parameters.push(["trainNumber", trainNumber.toString()]);
-			parameters.push(["requestedDate", this.convertDate(requestedDate)]);
+			parameters.push(["requestedDate", convertDate(requestedDate)]);
 			parameters.push(["dateType", dateType.toString()]);
-			parameters.push(["language", this.language]);
+			parameters.push(["language", language]);
 	
-			return this.send(method, url, parameters, callback);
+			return send(method, url, parameters, callback);
 		}
 	}
 	/* end railtime object */
-}; 
+}());
