@@ -11,6 +11,7 @@
 		<meta name="description" content="Shows the Time table of trains" />
 		<meta name="author" content="DDT" />
 
+		<link rel="stylesheet" href="css/smalltrain.css"/>
 		<!-- <meta name="viewport" content="width=device-width; initial-scale=1.0" /> -->
 
 		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
@@ -19,25 +20,27 @@
 		<script type="text/javascript" src="lib/sha1.js"></script>
 	  	<script type="text/javascript" src="lib/oauth.js"></script>
 	  	<script type="text/javascript" src="lib/jquery-1.8.3.js"></script>
-	  	<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.9.2.custom.css">
-	    <script type="text/javascript" src="lib/jquery-ui-1.9.2.custom.js"></script>
 		<script type="text/javascript" src="js/railtime.js"></script>
 	</head>
 
 	<body>
-		<div>
+		<div class="global-body">
 			<header>
-				<h1>SmallTrain</h1>
+				<h1 id="train-title" >SmallTrain</h1>
+				<img id="train-image" src="images/train-icon-small.png" />
 			</header>
 
-			<div>
-				<table id="train-schedule" border="1">
-					<tr>
-						<td>Departure&nbsp;Time</td><td>Delay</td><td>Arrival&nbsp;Time</td><td>Delay</td><td>Track</td>
-					</tr>
+			<div class="train-body">
+				<table id="train-schedule" >
+					<thead>
+						<tr>
+							<th> Departure&nbsp;Time</th><th>Delay</th><th>Arrival&nbsp;Time</th><th>Delay</th><th>Conn</th><th>Track</th>
+						</tr>
+					</thead>
 				</table>
 			</div>
-			<div id="train-msg">
+			
+			<div class="train-msg">
 			</div>
 			
 			<footer>

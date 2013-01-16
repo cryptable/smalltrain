@@ -1,3 +1,33 @@
 /*
  * CSS style sheet for Smalltrain
  */
+#train-title {
+	display: inline;
+}
+#train-image {
+	float: right;
+}
+table {
+	border-collapse: collapse;
+}
+table, th, td {
+	border: double black;
+}
+table td {
+	text-align: right;
+}
+.smalltrain-departuredelay {
+	text-align:center;
+}
+.smalltrain-arrivaldelay {
+	text-align:center;
+}
+.smalltrain-connections {
+	text-align:center;
+}
+.smalltrain-track {
+	text-align:center;
+}
+tr.delayed {
+	background-color: red;
+}

@@ -18,13 +18,13 @@ var popupPage = (function() {
 			endStationObj.Id,
 			now,
 			1,
-			1000,
+			0,
 			0,
 			5,
 			function(status, responseText) {
 				var response,
 					route, transports, transport,
-					textMsg, table, tr, td1, td2, td3, td4, td5, departure, departureDelay, arrival, arrivalDelay, track,
+					textMsg, table, tr, td1, td2, td3, td4, td5, departure, departureDelay, arrival, arrivalDelay, connections, track,
 					i, max; 
 				if (status == 200) {
 					response = JSON.parse(responseText);
@@ -32,7 +32,7 @@ var popupPage = (function() {
 						table = document.getElementById('train-schedule');
 						tr = document.createElement('TR');
 						td1 = document.createElement('TD');
-						td1.setAttribute("colspan", "5");
+						td1.setAttribute("colspan", "6");
 						td1.innerText = "No routes found.";
 						table.appendChild(tr);
 						tr.appendChild(td1);
@@ -49,22 +49,33 @@ var popupPage = (function() {
 							td3 = document.createElement('TD');
 							td4 = document.createElement('TD');
 							td5 = document.createElement('TD');
-							departure = (new Date(parseInt(route["DepartureDateTime"].substr(6)))).toLocaleTimeString();
+							td6 = document.createElement('TD');
+							departure = (new Date(parseInt(route["DepartureDateTime"].substr(6),10))).toLocaleTimeString();
 							departureDelay = route["DepartureDelay"];
-							arrival = (new Date(parseInt(route["ArrivalDateTime"].substr(6)))).toLocaleTimeString();
+							arrival = (new Date(parseInt(route["ArrivalDateTime"].substr(6),10))).toLocaleTimeString();
 							arrivalDelay = route["ArrivalDelay"];
+							connections= route["Connections"]
 							track = transport["DepartureTrack"];
 							td1.innerText = departure;
 							td2.innerText = departureDelay;
+							td2.setAttribute("class", "smalltrain-departuredelay");
 							td3.innerText = arrival;
 							td4.innerText = arrivalDelay;
-							td5.innerText = track;
+							td4.setAttribute("class", "smalltrain-arrivaldelay");
+							td5.innerText = connections;
+							td5.setAttribute("class", "smalltrain-connections");
+							td6.innerText = track;
+							td6.setAttribute("class", "smalltrain-track");
+							if (departureDelay > 0) {
+								tr.setAttribute("class", "delayed");
+							}
 							table.appendChild(tr);
 							tr.appendChild(td1);
 							tr.appendChild(td2);
 							tr.appendChild(td3);
 							tr.appendChild(td4);
 							tr.appendChild(td5);
+							tr.appendChild(td6);
 						}
 					}
 				}
@@ -73,7 +84,7 @@ var popupPage = (function() {
 					table = document.getElementById('train-schedule');
 					tr = document.createElement('TR');
 					td1 = document.createElement('TD');
-					td1.setAttribute("colspan", "5");
+					td1.setAttribute("colspan", "6");
 					td1.innerText = "Failed to get train schedule";
 					table.appendChild(tr);
 					tr.appendChild(td1);
