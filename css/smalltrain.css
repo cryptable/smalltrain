@@ -1,6 +1,11 @@
 /*
  * CSS style sheet for Smalltrain
  */
+
+body {
+	font-family: verdana;
+	font-size: 10px;
+}
 #train-title {
 	display: inline;
 }
