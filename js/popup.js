@@ -119,6 +119,11 @@ var popupPage = (function() {
 		);
 	};
 	
+	var openOptions = function() {
+		var url = chrome.extension.getURL("options.html");
+		chrome.tabs.create({url:url, selected:true});
+	}
+		
 	return {
 		/*
 		 * intialized the popup pages
@@ -127,6 +132,8 @@ var popupPage = (function() {
 		 */ 
 		initPage : function() {
 			readConfig();
+			options = document.getElementById('toOptions');
+			options.addEventListener("click", openOptions);
 		}
 	} 
 }());

@@ -12,15 +12,28 @@ body {
 #train-image {
 	float: right;
 }
-table {
+
+table#train-schedule {
 	border-collapse: collapse;
-}
-table, th, td {
 	border: solid 1px black;
 }
-table td {
+table#train-schedule th {
+	border: solid 1px black;
+}
+table#train-schedule td {
+	text-align: right;
+	border: solid 1px black;
+}
+table#options {
+	border-collapse: collapse;
+}
+table#options, th, td {
+	border: none;
+}
+table#options td {
 	text-align: right;
 }
+
 .smalltrain-departuredelay {
 	text-align:center;
 }
