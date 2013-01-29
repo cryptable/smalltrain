@@ -9,32 +9,14 @@ var optionsPage = (function() {
 	var stationList = null;
 	var startStationObj = null;
 	var endStationObj = null;
-
+	
 	// Set variables to elements
 	var consumerKey = document.getElementById("consumer-key");
 	var startStation = document.getElementById("start-station");
 	var endStation = document.getElementById("end-station");
-	var saveButton = document.getElementById("save-button");
-	var cancelButton = document.getElementById("cancel-button");
-
+	var languageSelect = document.getElementById("train-language");
+	
 	// set actions to the buttons
-	saveButton.addEventListener('click', function() {
-		if (startStationObj !== null) {
-			chrome.storage.local.set({ "smalltrain.startStation" : startStationObj}, function() {
-				return;
-			});
-		}
-		if (endStationObj !== null) {
-			chrome.storage.local.set({ "smalltrain.endStation" : endStationObj}, function() {
-				return;
-			});
-		}
-	});
-	
-	cancelButton.addEventListener('click', function() {
-		clearStations();	
-	});
-	
 	document.getElementById("refresh-button").addEventListener('click', function() {
 		railtime.setConsumerSecret(consumerKey.value);
 		railtime.retrieveStationList(null, function(status, responseText) {
@@ -54,6 +36,14 @@ var optionsPage = (function() {
 		chrome.storage.local.set({"smalltrain.consumerkey" : consumerKey.value}, function() {
 			return;
 		});
+		enableDisable();
+	});	
+
+	languageSelect.addEventListener("change", function () {
+		chrome.storage.local.set({"smalltrain.language" : languageSelect.value}, function() {
+			return;
+		});
+		enableDisable();
 	});	
 	
 	$("#start-station").autocomplete({
@@ -67,6 +57,9 @@ var optionsPage = (function() {
 		},
 		select: function(event, ui) {
 			startStationObj = searchStationInList(ui.item.value);
+			chrome.storage.local.set({ "smalltrain.startStation" : startStationObj}, function() {
+				return;
+			});
 			enableDisable();
 		}
 	});
@@ -82,6 +75,9 @@ var optionsPage = (function() {
 		},
 		select: function(event, ui) {
 			endStationObj = searchStationInList(ui.item.value);
+			chrome.storage.local.set({ "smalltrain.endStation" : endStationObj}, function() {
+				return;
+			});
 			enableDisable();
 		}
 	});
@@ -93,27 +89,30 @@ var optionsPage = (function() {
 	 * @method enableDisable
 	 */
 	var enableDisable = function() {
+		var lang = languageSelect.value;
+		
 		if (consumerKey.value === undefined || consumerKey.value === "") {
-			saveButton.disabled = true;
-			cancelButton.disabled = true;
 			startStation.disabled = true;
 			endStation.disabled = true;
 		} else {
 			if (stationList === undefined) {
-				saveButton.disabled = true;
-				cancelButton.disabled = true;
 				startStation.disabled = true;
 				endStation.disabled = true;
 			} else {
-				if (startStationObj && endStationObj) {
-					saveButton.disabled = false;
-				} else {
-					saveButton.disabled = true;				
-				}
-				cancelButton.disabled = false;
 				startStation.disabled = false;
 				endStation.disabled = false;					
 			}
+		}
+		/* Set data values */
+		if (startStationObj === undefined || startStationObj === null) {
+			startStation.value = "";			
+		} else {
+			startStation.value = startStationObj["Name"+lang]; 			
+		}
+		if (endStationObj === undefined || endStationObj === null) {
+			endStation.value = "";			
+		} else {
+			endStation.value = endStationObj["Name"+lang]; 			
 		}
 	};
 	
@@ -127,10 +126,26 @@ var optionsPage = (function() {
 		var configList = [ "smalltrain.consumerkey", 
 		                   "smalltrain.stationlist",
 		                   "smalltrain.startStation",
-		                   "smalltrain.endStation"];
+		                   "smalltrain.endStation",
+		                   "smalltrain.language"];
+		var lang = "";
 		
 		chrome.storage.local.get(configList,
 			function (items) {
+				if (items["smalltrain.language"] !== undefined) {
+					languageSelect.value = items["smalltrain.language"]; 		
+				} else {
+					lang = window.navigator.language.substr(0,2).toUpperCase();
+					if (lang != "EN" &&
+						lang != "NL" &&
+						lang != "FR" &&
+						lang != "DE") {
+						languageSelect.value = "EN";
+					} else {
+						languageSelect.value = lang;						
+					}
+					
+				} 
 				if (items["smalltrain.consumerkey"] !== undefined){
 					consumerKey.value = items["smalltrain.consumerkey"]; 				
 				} else {
@@ -143,17 +158,13 @@ var optionsPage = (function() {
 				}
 				if (items["smalltrain.startStation"] !== undefined) {
 					startStationObj = items["smalltrain.startStation"];
-					startStation.value = startStationObj["NameEN"]; 			
 				} else {
 					startStationObj = undefined;
-					startStation.value = "";
 				}
 				if (items["smalltrain.endStation"] !== undefined) {
-					endStationObj = items["smalltrain.endStation"]; 				
-					endStation.value = endStationObj["NameEN"]; 			
+					endStationObj = items["smalltrain.endStation"];	
 				} else {
 					endStationObj = undefined;
-					endStation.value = ""; 			
 				}
 				enableDisable();
 			}
@@ -172,14 +183,15 @@ var optionsPage = (function() {
 	var searchStationInList = function(searchCriteria, callback) {
 		var	i = 0,
 			max = 0,
-			station = null;
+			station = null,
+			lang = languageSelect.value;
 
 		for (i = 0, max = stationList.length; i < max; i++) {
 			station = stationList[i];
 			// Search occurences beginning of a word 
-			if (station["NameEN"] === searchCriteria) {
+			if (station["Name" + lang] === searchCriteria) {
 				if (callback !== undefined) {
-					callback(station["NameEN"], station);
+					callback(station["Name" + lang], station);
 				}
 				return station;
 			}
@@ -203,15 +215,16 @@ var optionsPage = (function() {
 			max = 0,
 			result = [],
 			re = new RegExp("^" + searchCriteria + ".*","i");
-			station = null;
+			station = null,
+			lang = languageSelect.value;
 
 		for (i = 0, cnt = 0, max = stationList.length; (i < max) && (cnt < max_values); i++) {
 			station = stationList[i];
 			// Search occurences beginning of a word 
-			if (station["NameEN"].search(re) !== -1) {
+			if (station["Name" + lang].search(re) !== -1) {
 				result.push(station);
 				if (callback !== undefined) {
-					callback(station["NameEN"], station);
+					callback(station["Name" + lang], station);
 				}
 				cnt++;
 			}

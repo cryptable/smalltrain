@@ -22,7 +22,7 @@
 					</thead>
 				</header>
 				<tr>
-					<td><div id="label">OAuth Consumer Secret</div></td> 
+					<td><div class="label">OAuth Consumer Secret</div></td> 
 					<td align="left"><input type="text" id="consumer-key"></td>
 					<td><button id="refresh-button" style="font-weight:bold">Refresh</button></td>
 				</tr>
@@ -38,10 +38,23 @@
 					  <td  align="left"><input type="text" id="end-station" /></td>
 					</div>
 				</tr>
+				<tr>
+					<div class="label">
+					  <td><label for="train-language">Language: </label></td>
+					  <td  align="left">
+  					    <select id="train-language">
+  						  <option value="EN">English</option>
+						  <option value="NL">Nederlands</option>
+						  <option value="FR">Fran&ccedil;ais</option>
+					      <option value="DE">Deutsh</option>
+					    </select>
+					  </td>
+					</div>
+				</tr>
 			</table>
 		<div id="footer">
-		  <button id="save-button" style="font-weight:bold">Save</button>
-		  <button id="cancel-button">Cancel</button>
+		  <!-- <button id="save-button" style="font-weight:bold">Save</button> --> 
+		  <!-- <button id="cancel-button">Cancel</button> -->
 		</div>
 	</div>
 	<script src="js/options.js"></script>
