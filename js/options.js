@@ -6,6 +6,31 @@
  * @class optionsPage
  **/
 var optionsPage = (function() {
+	var resources = { "EN": { 
+					 	"start-station-label": "Start&nbsp;Station",
+					    "end-station-label": "End&nbsp;Station",
+					    "language-label": "Language",
+					    "refresh-button": "Refresh"
+					 },
+					 "NL": {
+					 	"start-station-label": "Vertrek&nbsp;station",
+					    "end-station-label": "Aankomst&nbsp;station",
+					    "language-label": "Taal",
+					    "refresh-button": "Verversen"
+					 },
+					 "FR": {
+					 	"start-station-label": "Gare&nbsp;de&nbsp;d&eacute;part",
+					    "end-station-label": "Gare&nbsp;d&#x27;arriv&eacute;e",
+					    "language-label": "Langue",
+					    "refresh-button": "Rafra&icirc;chir"
+					 },
+					 "DE": {
+					 	"start-station-label": "Abfahrtsbahnhof",
+					    "end-station-label": "Zielbahnhof",
+					    "language-label": "Sprache",
+					    "refresh-button": "Erfrischen"
+					 }
+	               };
 	var stationList = null;
 	var startStationObj = null;
 	var endStationObj = null;
@@ -25,7 +50,7 @@ var optionsPage = (function() {
 				chrome.storage.local.set({ "smalltrain.stationlist" : stationList }, function() {
 					return;
 				});
-				enableDisable();
+				updatePage();
 			} else {
 				alert("Retrieve stations DB failed");
 			}
@@ -36,14 +61,14 @@ var optionsPage = (function() {
 		chrome.storage.local.set({"smalltrain.consumerkey" : consumerKey.value}, function() {
 			return;
 		});
-		enableDisable();
+		updatePage();
 	});	
 
 	languageSelect.addEventListener("change", function () {
 		chrome.storage.local.set({"smalltrain.language" : languageSelect.value}, function() {
 			return;
 		});
-		enableDisable();
+		updatePage();
 	});	
 	
 	$("#start-station").autocomplete({
@@ -60,7 +85,7 @@ var optionsPage = (function() {
 			chrome.storage.local.set({ "smalltrain.startStation" : startStationObj}, function() {
 				return;
 			});
-			enableDisable();
+			updatePage();
 		}
 	});
 
@@ -78,7 +103,7 @@ var optionsPage = (function() {
 			chrome.storage.local.set({ "smalltrain.endStation" : endStationObj}, function() {
 				return;
 			});
-			enableDisable();
+			updatePage();
 		}
 	});
 	
@@ -86,9 +111,9 @@ var optionsPage = (function() {
 	 * enalbe and disable the GUI
 	 * 
 	 * @private
-	 * @method enableDisable
+	 * @method updatePage
 	 */
-	var enableDisable = function() {
+	var updatePage = function() {
 		var lang = languageSelect.value;
 		
 		if (consumerKey.value === undefined || consumerKey.value === "") {
@@ -114,6 +139,11 @@ var optionsPage = (function() {
 		} else {
 			endStation.value = endStationObj["Name"+lang]; 			
 		}
+		/* set labels */
+		document.getElementById("refresh-button").innerHTML = resources[lang]["refresh-button"];
+		document.getElementById("start-station-label").innerHTML = resources[lang]["start-station-label"];
+		document.getElementById("end-station-label").innerHTML = resources[lang]["end-station-label"];
+		document.getElementById("language-label").innerHTML = resources[lang]["language-label"];
 	};
 	
 	/** 
@@ -166,7 +196,7 @@ var optionsPage = (function() {
 				} else {
 					endStationObj = undefined;
 				}
-				enableDisable();
+				updatePage();
 			}
 		);
 	};

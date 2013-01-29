@@ -1,12 +1,53 @@
 
 // the code behind the popup page
 var popupPage = (function() {
+	var resources = {
+		"EN" : { 
+			"departure-time": "Departure&nbsp;Time",	
+			"delay": "Delay",	
+			"arrival-time": "Arrival&nbsp;Time",	
+			"connection": "Conn",	
+			"track": "Track"
+			},	
+		"NL" : { 
+			"departure-time": "Vertrek&nbsp;tijd",	
+			"delay": "Vert.",	
+			"arrival-time": "Aankomst&nbsp;tijd",	
+			"connection": "Conn",	
+			"track": "Spoor"
+			},	
+		"FR" : { 
+			"departure-time": "heure&nbsp;de&nbsp;d&eacute;part",	
+			"delay": "Retard",	
+			"arrival-time": "heure&nbsp;d&#x27;arriv&eacute;e",	
+			"connection": "Lien",	
+			"track": "Voie"
+			},	
+		"DE" : { 
+			"departure-time": "Abfahrtszeit",	
+			"delay": "Verzögern",	
+			"arrival-time": "Ankunftszeit",	
+			"connection": "Verb.",	
+			"track": "Spur"
+			}
+	}
 	var consumerKey;
 	var startStationObj;
 	var endStationObj;
+	var language = "EN";
 	
 	var updateData = function() {
 		var now = new Date();
+		var header = document.getElementById('train-schedule').rows[0].cells;
+		
+		/*Prepare page*/
+		header[0].innerHTML = resources[language]["departure-time"];
+		header[1].innerHTML = resources[language]["delay"]; 
+		header[2].innerHTML = resources[language]["arrival-time"]; 
+		header[3].innerHTML = resources[language]["delay"]; 
+		header[4].innerHTML = resources[language]["connection"]; 
+		header[5].innerHTML = resources[language]["track"]; 
+		
 		if ((consumerKey == undefined) ||
 		    (startStationObj == undefined) ||
 		    (endStationObj == undefined)) {
@@ -96,7 +137,9 @@ var popupPage = (function() {
 	var readConfig = function() {
 		var configList = [ "smalltrain.consumerkey", 
 		                   "smalltrain.startStation",
-		                   "smalltrain.endStation"];
+		                   "smalltrain.endStation",
+		                   "smalltrain.language"
+		                   ];
 		chrome.storage.local.get(configList,
 			function (items) {
 				if (items["smalltrain.consumerkey"] !== undefined){
@@ -113,6 +156,11 @@ var popupPage = (function() {
 					endStationObj = items["smalltrain.endStation"]; 				
 				} else {
 					endStationObj = undefined;
+				}
+				if (items["smalltrain.language"] !== undefined) {
+					language = items["smalltrain.language"]; 				
+				} else {
+					language = "EN";
 				}
 				updateData();
 			}
