@@ -10,17 +10,20 @@ var optionsPage = (function() {
 					 	"start-station-label": "Start&nbsp;Station",
 					    "end-station-label": "End&nbsp;Station",
 					    "language-label": "Language",
+					    "time-to-go-label": "Go to station",
 					    "refresh-button": "Refresh"
 					 },
 					 "NL": {
 					 	"start-station-label": "Vertrek&nbsp;station",
 					    "end-station-label": "Aankomst&nbsp;station",
 					    "language-label": "Taal",
+					    "time-to-go-label": "Hup, naar het station",
 					    "refresh-button": "Verversen"
 					 },
 					 "FR": {
 					 	"start-station-label": "Gare&nbsp;de&nbsp;d&eacute;part",
 					    "end-station-label": "Gare&nbsp;d&#x27;arriv&eacute;e",
+					    "time-to-go-label": "Il faut y aller!",
 					    "language-label": "Langue",
 					    "refresh-button": "Rafra&icirc;chir"
 					 },
@@ -28,6 +31,7 @@ var optionsPage = (function() {
 					 	"start-station-label": "Abfahrtsbahnhof",
 					    "end-station-label": "Zielbahnhof",
 					    "language-label": "Sprache",
+					    "time-to-go-label": "Zum Bahnhof",
 					    "refresh-button": "Erfrischen"
 					 }
 	               };
@@ -40,6 +44,7 @@ var optionsPage = (function() {
 	var startStation = document.getElementById("start-station");
 	var endStation = document.getElementById("end-station");
 	var languageSelect = document.getElementById("train-language");
+	var timeToGo = document.getElementById("time-to-go");
 	
 	// set actions to the buttons
 	document.getElementById("refresh-button").addEventListener('click', function() {
@@ -64,13 +69,6 @@ var optionsPage = (function() {
 		updatePage();
 	});	
 
-	languageSelect.addEventListener("change", function () {
-		chrome.storage.local.set({"smalltrain.language" : languageSelect.value}, function() {
-			return;
-		});
-		updatePage();
-	});	
-	
 	$("#start-station").autocomplete({
 		minLength: 3,
 		source: function (request, response) {
@@ -107,6 +105,28 @@ var optionsPage = (function() {
 		}
 	});
 	
+	languageSelect.addEventListener("change", function () {
+		chrome.storage.local.set({"smalltrain.language" : languageSelect.value}, function() {
+			return;
+		});
+		updatePage();
+	});	
+	
+	// Need to use 2 event listeners to 'keyup' for entering manually
+	timeToGo.addEventListener("keyup", function () {
+		chrome.storage.local.set({"smalltrain.timeToGo" : timeToGo.value}, function() {
+			return;
+		});
+		updatePage();
+	});
+	// Need to use 2 event listeners to 'keyup' for entering with the buttons
+	timeToGo.addEventListener("change", function () {
+		chrome.storage.local.set({"smalltrain.timeToGo" : timeToGo.value}, function() {
+			return;
+		});
+		updatePage();
+	});
+		
 	/**
 	 * enalbe and disable the GUI
 	 * 
@@ -144,6 +164,7 @@ var optionsPage = (function() {
 		document.getElementById("start-station-label").innerHTML = resources[lang]["start-station-label"];
 		document.getElementById("end-station-label").innerHTML = resources[lang]["end-station-label"];
 		document.getElementById("language-label").innerHTML = resources[lang]["language-label"];
+		document.getElementById("time-to-go-label").innerHTML = resources[lang]["time-to-go-label"];
 	};
 	
 	/** 
@@ -157,25 +178,12 @@ var optionsPage = (function() {
 		                   "smalltrain.stationlist",
 		                   "smalltrain.startStation",
 		                   "smalltrain.endStation",
-		                   "smalltrain.language"];
+		                   "smalltrain.language",
+		                   "smalltrain.timeToGo" ];
 		var lang = "";
 		
 		chrome.storage.local.get(configList,
 			function (items) {
-				if (items["smalltrain.language"] !== undefined) {
-					languageSelect.value = items["smalltrain.language"]; 		
-				} else {
-					lang = window.navigator.language.substr(0,2).toUpperCase();
-					if (lang != "EN" &&
-						lang != "NL" &&
-						lang != "FR" &&
-						lang != "DE") {
-						languageSelect.value = "EN";
-					} else {
-						languageSelect.value = lang;						
-					}
-					
-				} 
 				if (items["smalltrain.consumerkey"] !== undefined){
 					consumerKey.value = items["smalltrain.consumerkey"]; 				
 				} else {
@@ -195,6 +203,26 @@ var optionsPage = (function() {
 					endStationObj = items["smalltrain.endStation"];	
 				} else {
 					endStationObj = undefined;
+				}
+				if (items["smalltrain.language"] !== undefined) {
+					languageSelect.value = items["smalltrain.language"]; 		
+				} else {
+					lang = window.navigator.language.substr(0,2).toUpperCase();
+					if (lang != "EN" &&
+						lang != "NL" &&
+						lang != "FR" &&
+						lang != "DE") {
+						languageSelect.value = "EN";
+					} else {
+						languageSelect.value = lang;						
+					}
+					
+				} 
+				if (items["smalltrain.timeToGo"] !== undefined) {
+					timeToGo.value = items["smalltrain.timeToGo"];	
+				}
+				else {
+					timeToGo.value = 10;
 				}
 				updatePage();
 			}
