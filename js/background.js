@@ -59,6 +59,7 @@ var backgroundPage = ( function() {
 							departure = (new Date(parseInt(route["DepartureDateTime"].substr(6),10)));
 							departureDelay = parseInt(route["DepartureDelay"], 10);
 							trainDeparture = (departure.getTime() + (departureDelay * 60000));
+							console.log("Set Alarm Time to go " + timeToGo + ":" + (new Date(trainDeparture - (timeToGo+10 * 60000))))
 							chrome.alarms.create("smalltrain.show-time", 
 							                     {when: (trainDeparture- (timeToGo+10 * 60000)), periodInMinutes: 1});
                      	}
@@ -102,9 +103,9 @@ var backgroundPage = ( function() {
 					endStationObj = undefined;
 				}
 				if (items["smalltrain.timeToGo"] !== undefined) {
-					timeToCheck = items["smalltrain.timeToGo"]; 				
+					timeToGo = items["smalltrain.timeToGo"]; 				
 				} else {
-					timeToCheck = 10;
+					timeToGo = 10;
 				}
 				if (items["smalltrain.timeToCheck"] !== undefined) {
 					timeToCheck = items["smalltrain.timeToCheck"]; 				
