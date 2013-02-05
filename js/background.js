@@ -24,7 +24,8 @@ var backgroundPage = ( function() {
 			if (message.version === 1) {
 				endOfDate = message.value['end_of_day'];
 				// set alarm min 10 minutes and scan every 2 minutes 
-				chrome.alarms.create("smalltrain.schedule", {when: (endOfDate.getTime()-((timeToGo + 10) *60000)), periodInMinutes: 2});
+				console.log("Set time" + (endOfDate.getTime()-((timeToGo + 10) *60000)))
+				chrome.alarms.create("smalltrain.schedule", {when: (endOfDate.getTime()-((timeToGo + 10) *60000)) });
 				chrome.storage.local.set({"smalltrain.timeToCheck" : endOfDate }, function() {
 					return;
 				});
@@ -40,7 +41,7 @@ var backgroundPage = ( function() {
 			railtime.setConsumerSecret(consumerKey);
 			railtime.retrieveRoutes(startStationObj.Id,
 				endStationObj.Id,
-				now,
+				new Date(Date.now() + (timeToGo * 60000)),
 				1,
 				0,
 				0,
@@ -70,7 +71,8 @@ var backgroundPage = ( function() {
 			);			
 		}
 		if (alarm.name === "smalltrain.show-time" && railtime !== undefined) {
-			minutes = Math.floor((Date.now() - trainDeparture - (timeToGo+10 * 60000)) / 60000);
+			minutes = Math.floor((Date.now() - (trainDeparture - (timeToGo+10 * 60000))) / 60000);
+			console.log("Time to train" + minutes)
 			chrome.browserAction.setBadgeText({text:minutes.toString()});
 		}
 	};
@@ -109,7 +111,6 @@ var backgroundPage = ( function() {
 				} else {
 					timeToCheck = Date.now();
 				}
-				updateData();
 			}
 		);
 	};
@@ -126,7 +127,7 @@ var backgroundPage = ( function() {
 				method: "subscribe",
 				arguments: ['end_of_day']
 			};
-			// readConfig();
+			readConfig();
 			smalstime = chrome.extension.connect('amphlkkeggmfpadglofdhapackbjmhfp');
 			smalstime.onMessage.addListener(onMessage);
 			smalstime.postMessage(request)
@@ -136,7 +137,7 @@ var backgroundPage = ( function() {
 		},
 		
 		setEndOfDay: function(dateTime) {
-			var msg = { value: {'end_of_day': dateTime}};
+			var msg = { version: 1, value: {'end_of_day': dateTime}};
 			onMessage(msg);
 		}
 	} 		
