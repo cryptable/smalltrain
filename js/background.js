@@ -133,6 +133,11 @@ var backgroundPage = ( function() {
 			// register alarm callback
 			chrome.alarms.onAlarm.addListener(onAlarm);
 			isConfigure = true;
+		},
+		
+		setEndOfDay: function(dateTime) {
+			var msg = { value: {'end_of_day': dateTime}};
+			onMessage(msg);
 		}
 	} 		
 }())
