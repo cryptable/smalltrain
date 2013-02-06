@@ -22,9 +22,10 @@ var backgroundPage = ( function() {
 		
 		if (isConfigure) {
 			if (message.version === 1) {
-				endOfDate = message.value['end_of_day'];
+				endOfDate = new Date(message.value['end_of_day']);
+				console.log("Message value " + message.value['end_of_day']);
 				// set alarm min 10 minutes and scan every 2 minutes 
-				console.log("Set time" + (endOfDate.getTime()-((timeToGo + 10) *60000)))
+				console.log("Set time " + endOfDate.getTime());
 				chrome.alarms.create("smalltrain.schedule", {when: (endOfDate.getTime()-((timeToGo + 10) *60000)) });
 				chrome.storage.local.set({"smalltrain.timeToCheck" : endOfDate }, function() {
 					return;
@@ -76,6 +77,10 @@ var backgroundPage = ( function() {
 	var onAlarm= function(alarm) {
 		var result = {};
 		
+		if (!isConfigure) {
+			console.log('Not yet configured!');
+			return;
+		}
 		if (alarm.name === "smalltrain.schedule" && railtime !== undefined) {
 			retrieveTrainSchedule();
 		}
@@ -150,11 +155,11 @@ var backgroundPage = ( function() {
 				arguments: ['end_of_day']
 			};
 			readConfig();
+			chrome.alarms.onAlarm.addListener(onAlarm);
 			smalstime = chrome.extension.connect('amphlkkeggmfpadglofdhapackbjmhfp');
 			smalstime.onMessage.addListener(onMessage);
 			smalstime.postMessage(request)
 			// register alarm callback
-			chrome.alarms.onAlarm.addListener(onAlarm);
 			isConfigure = true;
 		},
 		
@@ -171,4 +176,5 @@ var backgroundPage = ( function() {
 }())
 
 // Execute the page code when page is loaded
+backgroundPage.disableNotification();
 backgroundPage.initPage();
