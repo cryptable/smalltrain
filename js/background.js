@@ -32,49 +32,70 @@ var backgroundPage = ( function() {
 			}
 		}
 	};
+
+	var retrieveTrainSchedule = function() {
+		railtime.setConsumerSecret(consumerKey);
+		railtime.retrieveRoutes(startStationObj.Id,
+			endStationObj.Id,
+			new Date(Date.now() + (timeToGo * 60000)),
+			1,
+			0,
+			0,
+			1,
+			function(status, responseText) {
+				var response, route, transports, transport,departure, departureDelay;
+				 
+				if (status == 200) {
+					response = JSON.parse(responseText);
+					if (response.Routes.length !== 0) {
+						route = response.Routes[0];
+						transports = route["Transports"];
+						transport = transports[0];
+						departure = (new Date(parseInt(route["DepartureDateTime"].substr(6),10)));
+						departureDelay = parseInt(route["DepartureDelay"], 10);
+						trainDeparture = (departure.getTime() + (departureDelay * 60000));
+						console.log("Set Alarm Time to go " + timeToGo + ":" + (new Date(trainDeparture - (timeToGo+10 * 60000))))
+						// Somehow negative value -> retry in 5 minutes
+						if (Math.floor(((trainDeparture - (timeToGo * 60000)) - Date.now()) / 60000) < 0) {
+							chrome.alarms.create("smalltrain.schedule", {when: (Date.now()+(5 *60000)) });				
+						} else {
+							chrome.alarms.create("smalltrain.show-time", 
+							                     {when: (trainDeparture - ((timeToGo + 10) * 60000)), periodInMinutes: 1});
+						}
+                 	}
+				}
+				else {
+					// Failed to get train information
+					chrome.browserAction.setBadgeText({text:"X"});
+				}
+			}
+		);			
+	}	
 	
 	// Perform the correct action when an Alarm is inistiated
 	var onAlarm= function(alarm) {
 		var result = {};
 		
 		if (alarm.name === "smalltrain.schedule" && railtime !== undefined) {
-			railtime.setConsumerSecret(consumerKey);
-			railtime.retrieveRoutes(startStationObj.Id,
-				endStationObj.Id,
-				new Date(Date.now() + (timeToGo * 60000)),
-				1,
-				0,
-				0,
-				1,
-				function(status, responseText) {
-					var response, route, transports, transport,departure, departureDelay, 
-						timeToGo = 0;
-					 
-					if (status == 200) {
-						response = JSON.parse(responseText);
-						if (response.Routes.length !== 0) {
-							route = response.Routes[0];
-							transports = route["Transports"];
-							transport = transports[0];
-							departure = (new Date(parseInt(route["DepartureDateTime"].substr(6),10)));
-							departureDelay = parseInt(route["DepartureDelay"], 10);
-							trainDeparture = (departure.getTime() + (departureDelay * 60000));
-							console.log("Set Alarm Time to go " + timeToGo + ":" + (new Date(trainDeparture - (timeToGo+10 * 60000))))
-							chrome.alarms.create("smalltrain.show-time", 
-							                     {when: (trainDeparture- (timeToGo+10 * 60000)), periodInMinutes: 1});
-                     	}
-					}
-					else {
-						// Failed to get train information
-						chrome.browserAction.setBadgeText({text:"X"});
-					}
-				}
-			);			
+			retrieveTrainSchedule();
 		}
 		if (alarm.name === "smalltrain.show-time" && railtime !== undefined) {
-			minutes = Math.floor((Date.now() - (trainDeparture - (timeToGo+10 * 60000))) / 60000);
+			minutes = Math.floor(((trainDeparture - (timeToGo * 60000)) - Date.now()) / 60000);
 			console.log("Time to train" + minutes)
-			chrome.browserAction.setBadgeText({text:minutes.toString()});
+			if (minutes >= 0 && minutes <= 10) {
+				chrome.browserAction.setBadgeText({text:minutes.toString()});
+				chrome.browserAction.setBadgeBackgroundColor({color:'#008000'});
+				if (minutes >= 0 && minutes <= 5) {
+					chrome.browserAction.setBadgeBackgroundColor({color:'#FF0000'});
+				}
+			}
+			else if (minutes < 0) {
+				chrome.browserAction.setBadgeText({text:""});
+				retrieveTrainSchedule();			
+			}
+			else {
+				chrome.browserAction.setBadgeText({text:""});				
+			}
 		}
 	};
 
@@ -140,10 +161,14 @@ var backgroundPage = ( function() {
 		setEndOfDay: function(dateTime) {
 			var msg = { version: 1, value: {'end_of_day': dateTime}};
 			onMessage(msg);
+		},
+		
+		disableNotification: function() {
+			chrome.alarms.clear("smalltrain.schedule");
+			chrome.alarms.clear("smalltrain.show-time");
 		}
 	} 		
 }())
 
 // Execute the page code when page is loaded
 backgroundPage.initPage();
-chrome.browserAction.setBadgeText({text:"X"});
