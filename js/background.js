@@ -26,6 +26,7 @@ var backgroundPage = ( function() {
 				console.log("Message value " + message.value['end_of_day']);
 				// set alarm min 10 minutes and scan every 2 minutes 
 				console.log("Set time " + endOfDate.getTime());
+				resetShowTime();
 				chrome.alarms.create("smalltrain.schedule", {when: (endOfDate.getTime()-((timeToGo + 10) *60000)) });
 				chrome.storage.local.set({"smalltrain.timeToCheck" : endOfDate }, function() {
 					return;
@@ -104,6 +105,15 @@ var backgroundPage = ( function() {
 		}
 	};
 
+	var resetShowTime = function() {
+		try {
+			chrome.browserAction.setBadgeText({text:""});				
+			chrome.alarms.clear("smalltrain.show-time");
+		} catch (err) {
+			console.log("err: " + err);
+		}
+	};
+	
 	var readConfig = function() {
 		var configList = [ "smalltrain.consumerkey", 
 		                   "smalltrain.startStation",

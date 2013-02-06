@@ -1,6 +1,6 @@
 {
   "name": "Small Train",
-  "version": "0.2",
+  "version": "1.1",
   "manifest_version": 2,
   "description": "Get the small train schedule of Belgium",
   "options_page": "options.html",
