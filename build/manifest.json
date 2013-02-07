@@ -1,0 +1,25 @@
+{
+  "name": "Small Train",
+  "version": "1.1",
+  "manifest_version": 2,
+  "description": "Get the small train schedule of Belgium",
+  "options_page": "options.html",
+  "browser_action": {
+    "default_icon": "images/train-icon-small.png",
+    "default_popup": "popup.html"
+  },
+  "background": { 
+  	"persistent": false,
+  	"scripts":[ "lib/sha1.js", "lib/oauth.js", "js/railtime.js", "js/background.js"] 
+  },
+  "icons": {
+  	"16": "images/train-icon-16.png",
+  	"48": "images/train-icon-48.png",
+  	"128": "images/train-icon-128.png"
+  },
+  "permissions": [
+  	"alarms",
+  	"storage",
+    "http://services.infrabel.be/"
+  ]
+}
